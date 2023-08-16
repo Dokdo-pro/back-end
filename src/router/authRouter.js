@@ -56,4 +56,13 @@ router.get(
     res.json(buildResponse({ isDuplicated: isDuplicated, msg: msg }));
   })
 );
+
+router.put(
+  "/withdrawal",
+  asyncHandler(async (req, res, next) => {
+    const userToken = req.cookies.loginToken.token;
+    const deleteUser = await userService.deleteUser(userToken);
+    res.json(buildResponse(deleteUser));
+  })
+);
 module.exports = router;
