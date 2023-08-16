@@ -6,9 +6,13 @@ const GroupSchema = new Schema(
       type: String,
       required: true,
     },
-    memberNum: {
-      type: Number,
-      default: 1,
+    member: {
+      type: Schema.Types.Array,
+      member: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      default: [],
     },
     isRecruit: {
       type: boolean,
@@ -42,9 +46,9 @@ const GroupSchema = new Schema(
       },
       default: [],
     },
-    meeting: {
-      type: Number,
-      default: 0,
+    location: {
+      type: [String],
+      default: [],
     },
   },
   {
