@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { userService } = require("../services");
 const { buildResponse } = require("../misc/utils");
-const asyncHandler = require("../middlewares/asyncHandler");
+const { asyncHandler, isAuthenticated } = require("../middlewares");
 
 const router = Router();
 
@@ -59,10 +59,21 @@ router.get(
 
 router.put(
   "/withdrawal",
+  isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const userToken = req.cookies.loginToken.token;
     const deleteUser = await userService.deleteUser(userToken);
     res.json(buildResponse(deleteUser));
+  })
+);
+
+router.get(
+  "/me",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const userToken = req.cookies.loginToken.token;
+    const userInfo = await userService.getUser(userToken);
+    res.json(buildResponse(userInfo));
   })
 );
 module.exports = router;

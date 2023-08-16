@@ -63,6 +63,11 @@ class userService {
     const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
     return await this.userModel.deleteUser(userId);
   }
+
+  async getUser(userToken) {
+    const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
+    return await this.userModel.findUser(userId);
+  }
 }
 
 module.exports = new userService(userModel);
