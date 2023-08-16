@@ -6,13 +6,9 @@ const GroupSchema = new Schema(
       type: String,
       required: true,
     },
-    member: {
-      type: Schema.Types.Array,
-      member: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-      default: [],
+    memberNum: {
+      type: Number,
+      default: 1,
     },
     isRecruit: {
       type: boolean,

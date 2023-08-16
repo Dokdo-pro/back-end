@@ -1,14 +1,14 @@
 const { Schema } = require("mongoose");
 
-const groupTotagSchema = new Schema(
+const grouppostTogroupSchema = new Schema(
   {
     groupId: {
       type: Schema.Types.ObjectId,
       ref: "Group",
     },
-    tag: {
-      type: String,
-      default: "",
+    postId: {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
     },
   },
   {
@@ -16,4 +16,4 @@ const groupTotagSchema = new Schema(
   }
 );
 
-module.exports = groupTotagSchema;
+module.exports = grouppostTogroupSchema;
