@@ -10,10 +10,6 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    hashtag: {
-      type: [String],
-      default: [],
-    },
     isReport: {
       type: Boolean,
       default: false,
@@ -21,6 +17,10 @@ const PostSchema = new Schema(
     author: {
       type: String,
       required: true,
+    },
+    like: {
+      type: Number,
+      default: 0,
     },
   },
   {
