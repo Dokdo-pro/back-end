@@ -46,9 +46,9 @@ const GroupSchema = new Schema(
       },
       default: [],
     },
-    location: {
-      type: [String],
-      default: [],
+    meeting: {
+      type: Number,
+      default: 0,
     },
   },
   {
