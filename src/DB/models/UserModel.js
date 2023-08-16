@@ -13,6 +13,9 @@ class UserModel {
   async findById(id) {
     return await User.findOne({ id });
   }
+  async findByName(name) {
+    return await User.findOne({ name });
+  }
 }
 
 module.exports = new UserModel();
