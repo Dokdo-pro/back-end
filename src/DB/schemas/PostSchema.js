@@ -10,10 +10,6 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    isReport: {
-      type: Boolean,
-      default: false,
-    },
     author: {
       type: String,
       required: true,
@@ -24,7 +20,7 @@ const PostSchema = new Schema(
     },
   },
   {
-    timestamps: { currentTime: () => new Date(new Date.getTime() + 1000 * 60 * 60 * 9) },
+    timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
 

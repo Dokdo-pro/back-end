@@ -1,4 +1,4 @@
-const bcyrpt = require("bcyrpt");
+const bcyrpt = require("bcrypt");
 
 function buildResponse(data, errorMessage) {
   return {
