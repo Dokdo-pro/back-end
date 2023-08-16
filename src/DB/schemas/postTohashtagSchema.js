@@ -12,8 +12,8 @@ const postTohashtagSchema = new Schema(
     },
   },
   {
-    timestamps: { currentTime: () => new Date(new Date.getTime() + 1000 * 60 * 60 * 9) },
+    timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
 
-module.exports = postTohashtagSchemaSchema;
+module.exports = postTohashtagSchema;

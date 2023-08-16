@@ -30,9 +30,8 @@ const UserSchema = new Schema(
       },
       default: [],
     },
-    isActivacted: {
-      type: boolean,
-      required: true,
+    isActivated: {
+      type: Boolean,
       default: true,
     },
     profile: {
@@ -53,7 +52,7 @@ const UserSchema = new Schema(
     },
   },
   {
-    timestamps: { currentTime: () => new Date(new Date.getTime() + 1000 * 60 * 60 * 9) },
+    timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
 
