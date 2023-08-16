@@ -36,4 +36,24 @@ router.put(
     return res.clearCookie("loginToken").end();
   })
 );
+
+router.get(
+  "/checkDupId",
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.body;
+    const isDuplicated = await userService.isDuplicatedId(id);
+    const msg = isDuplicated ? "사용 가능한 아이디입니다." : "이미 사용중인 아이디입니다.";
+    res.json(buildResponse({ isDuplicated: isDuplicated, msg: msg }));
+  })
+);
+
+router.get(
+  "/checkDupName",
+  asyncHandler(async (req, res, next) => {
+    const { name } = req.body;
+    const isDuplicated = await userService.isDuplicatedName(name);
+    const msg = isDuplicated ? "사용 가능한 이름입니다." : "이미 사용중인 이름입니다.";
+    res.json(buildResponse({ isDuplicated: isDuplicated, msg: msg }));
+  })
+);
 module.exports = router;
