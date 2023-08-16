@@ -29,4 +29,11 @@ router.post(
     res.cookie("loginToken", userToken).json(buildResponse({ msg: "로그인 성공" }));
   })
 );
+
+router.put(
+  "/logout",
+  asyncHandler(async (req, res, next) => {
+    return res.clearCookie("loginToken").end();
+  })
+);
 module.exports = router;
