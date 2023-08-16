@@ -24,7 +24,7 @@ const GroupPostSchema = new Schema(
     },
   },
   {
-    timestamps: { currentTime: () => new Date(new Date.getTime() + 1000 * 60 * 60 * 9) },
+    timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
 

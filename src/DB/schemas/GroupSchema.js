@@ -11,7 +11,7 @@ const GroupSchema = new Schema(
       default: 1,
     },
     isRecruit: {
-      type: boolean,
+      type: Boolean,
       default: true,
     },
     profile: {
@@ -34,21 +34,13 @@ const GroupSchema = new Schema(
       type: Date,
       default: "",
     },
-    posts: {
-      type: Schema.Types.Array,
-      posts: {
-        type: Schema.Types.ObjectId,
-        ref: "Grouppost",
-      },
-      default: [],
-    },
     meeting: {
       type: Number,
       default: 0,
     },
   },
   {
-    timestamps: { currentTime: () => new Date(new Date.getTime() + 1000 * 60 * 60 * 9) },
+    timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
 
