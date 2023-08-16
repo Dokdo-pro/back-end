@@ -21,4 +21,12 @@ router.post(
   })
 );
 
+router.post(
+  "/login",
+  asyncHandler(async (req, res, next) => {
+    const { id, password } = req.body;
+    const userToken = await userService.getUserToken({ id, password });
+    res.cookie("loginToken", userToken).json(buildResponse({ msg: "로그인 성공" }));
+  })
+);
 module.exports = router;
