@@ -10,6 +10,9 @@ class UserModel {
   async create(user) {
     return await User.create(user);
   }
+  async findById(id) {
+    return await User.findOne({ id });
+  }
 }
 
 module.exports = new UserModel();
