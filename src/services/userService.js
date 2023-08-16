@@ -42,6 +42,22 @@ class userService {
     const token = jwt.sign({ userId, role }, secretKey, { expiresIn: "1h" });
     return { token };
   }
+
+  async isDuplicatedId(id) {
+    const user = await userModel.findById(id);
+    if (user) {
+      return false;
+    }
+    return true;
+  }
+
+  async isDuplicatedName(name) {
+    const user = await userModel.findByName(name);
+    if (user) {
+      return false;
+    }
+    return true;
+  }
 }
 
 module.exports = new userService(userModel);
