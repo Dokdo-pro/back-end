@@ -16,6 +16,11 @@ class UserModel {
   async findByName(name) {
     return await User.findOne({ name });
   }
+  async deleteUser(userId) {
+    return await User.findByIdAndUpdate(userId, {
+      isActivated: false,
+    });
+  }
 }
 
 module.exports = new UserModel();
