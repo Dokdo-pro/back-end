@@ -1,12 +1,13 @@
-const { userModel } = require("../db/models");
+const { userModel, groupTouserModel } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const { hashPassword } = require("../misc/utils");
 const bcrypt = require("bcrypt");
 const AppError = require("../misc/AppError");
 
 class userService {
-  constructor(userModel) {
+  constructor(userModel, groupTouserModel) {
     this.userModel = userModel;
+    this.groupTouserModel = groupTouserModel;
   }
 
   async postUser(userInfo) {
@@ -63,7 +64,9 @@ class userService {
 
   async getUser(userToken) {
     const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
-    return await this.userModel.findUser(userId);
+    const getUser = await this.userModel.findUser(userId);
+    const getGroup = await this.groupTouserModel.getGroup(userId);
+    return { ...getUser, group: getGroup };
   }
 
   async getUserId(email) {
@@ -89,4 +92,4 @@ class userService {
   }
 }
 
-module.exports = new userService(userModel);
+module.exports = new userService(userModel, groupTouserModel);
