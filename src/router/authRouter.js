@@ -96,4 +96,15 @@ router.patch(
     res.json(buildResponse({ msg: resetPasssword }));
   })
 );
+
+router.put(
+  "/me",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const userToken = req.cookies.loginToken.token;
+    const { name, address, profile } = req.body;
+    const editInfo = await userService.putUser({ userToken, name, address, profile });
+    res.json(buildResponse(editInfo));
+  })
+);
 module.exports = router;
