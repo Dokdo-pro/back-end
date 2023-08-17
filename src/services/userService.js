@@ -13,9 +13,6 @@ class userService {
     const { id, password, name, email, address, profile } = userInfo;
     const user = await this.userModel.findByEmail(email);
     if (user) {
-      if (!user.isActivated) {
-        throw new AppError("Bad Request", 400, "사용할 수 없는 ID입니다.");
-      }
       throw new AppError("Bad Request", 400, "이미 사용중인 이메일입니다.");
     }
     const hashedPW = await hashPassword(password);
@@ -67,6 +64,16 @@ class userService {
   async getUser(userToken) {
     const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
     return await this.userModel.findUser(userId);
+  }
+
+  async getUserId(email) {
+    const user = await userModel.findByEmail(email);
+    if (!user) {
+      throw new AppError("Bad Request", 400, "가입되지 않은 이메일입니다.");
+    } else if (!user.isActivated) {
+      throw new AppError("Bad Request", 400, "탈퇴한 회원입니다.");
+    }
+    return user.id;
   }
 }
 

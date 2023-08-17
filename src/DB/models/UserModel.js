@@ -5,7 +5,7 @@ const User = model("users", UserSchema);
 
 class UserModel {
   async findByEmail(email) {
-    return await User.findOne({ email: email });
+    return await User.findOne({ email });
   }
   async create(user) {
     return await User.create(user);
