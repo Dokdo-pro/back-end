@@ -5,13 +5,13 @@ const User = model("users", UserSchema);
 
 class UserModel {
   async findByEmail(email) {
-    return await User.findOne({ email: email });
+    return await User.findOne({ email });
   }
   async create(user) {
     return await User.create(user);
   }
   async findById(id) {
-    return await User.findOne({ _id: id });
+    return await User.findOne({ id });
   }
   async findByName(name) {
     return await User.findOne({ name: name });
@@ -22,9 +22,8 @@ class UserModel {
     });
   }
   async findUser(userId) {
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findById(userId);
     const { name, email, address, group, profile } = user;
-    console.log(user);
     return { name: name, email: email, address: address, group: group, profile: profile };
   }
 }

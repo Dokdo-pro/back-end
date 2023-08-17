@@ -76,4 +76,13 @@ router.get(
     res.json(buildResponse(userInfo));
   })
 );
+
+router.get(
+  "/id",
+  asyncHandler(async (req, res, next) => {
+    const { email } = req.body;
+    const userId = await userService.getUserId(email);
+    res.json(buildResponse({ userId: userId }));
+  })
+);
 module.exports = router;
