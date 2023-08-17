@@ -85,4 +85,15 @@ router.get(
     res.json(buildResponse({ userId: userId }));
   })
 );
+
+router.patch(
+  "/reset-pw",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const userToken = req.cookies.loginToken.token;
+    const { password } = req.body;
+    const resetPasssword = await userService.putPassword({ password, userToken });
+    res.json(buildResponse({ msg: resetPasssword }));
+  })
+);
 module.exports = router;

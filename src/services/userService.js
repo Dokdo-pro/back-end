@@ -75,6 +75,12 @@ class userService {
     }
     return user.id;
   }
+
+  async putPassword({ password, userToken }) {
+    const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
+    const hashedPW = await hashPassword(password);
+    return await userModel.findByIdAndUpdatePassword({ userId, hashedPW });
+  }
 }
 
 module.exports = new userService(userModel);
