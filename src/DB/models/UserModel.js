@@ -26,6 +26,9 @@ class UserModel {
     const { name, email, address, group, profile } = user;
     return { name: name, email: email, address: address, group: group, profile: profile };
   }
+  async findByIdAndUpdatePassword({ userId, hashedPW }) {
+    return await User.findByIdAndUpdate(userId, { password: hashedPW });
+  }
 }
 
 module.exports = new UserModel();
