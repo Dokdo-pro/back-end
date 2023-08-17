@@ -22,14 +22,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    group: {
-      type: Schema.Types.Array,
-      group: {
-        type: Schema.Types.ObjectId,
-        ref: "Group",
-      },
-      default: [],
-    },
     isActivated: {
       type: Boolean,
       default: true,
