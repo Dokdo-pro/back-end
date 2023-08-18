@@ -1,10 +1,10 @@
 const { Schema } = require("mongoose");
 
-const grouppostTogroupSchema = new Schema(
+const commentTopostSchema = new Schema(
   {
-    groupId: {
+    commentId: {
       type: Schema.Types.ObjectId,
-      ref: "Group",
+      ref: "Comment",
     },
     postId: {
       type: Schema.Types.ObjectId,
@@ -16,4 +16,4 @@ const grouppostTogroupSchema = new Schema(
   }
 );
 
-module.exports = grouppostTogroupSchema;
+module.exports = commentTopostSchema;
