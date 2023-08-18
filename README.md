@@ -1,1 +1,1 @@
-![image](./pic/simsin.png)
+![image](./pic/simsim.png)
