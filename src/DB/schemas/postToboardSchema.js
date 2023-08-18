@@ -1,14 +1,19 @@
 const { Schema } = require("mongoose");
 
-const groupTouserSchema = new Schema(
+const postToboardSchema = new Schema(
   {
-    groupId: {
+    groupboardId: {
       type: Schema.Types.ObjectId,
       ref: "Group",
+      default: null,
     },
-    userId: {
+    boardId: {
+      type: String,
+      default: "",
+    },
+    postId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Post",
     },
   },
   {
@@ -16,4 +21,4 @@ const groupTouserSchema = new Schema(
   }
 );
 
-module.exports = groupTouserSchema;
+module.exports = postToboardSchema;

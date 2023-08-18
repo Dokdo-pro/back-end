@@ -6,10 +6,6 @@ const GroupSchema = new Schema(
       type: String,
       required: true,
     },
-    memberNum: {
-      type: Number,
-      default: 1,
-    },
     isRecruit: {
       type: Boolean,
       default: true,
@@ -18,21 +14,9 @@ const GroupSchema = new Schema(
       type: String,
       default: "",
     },
-    like: {
-      type: Number,
-      default: 0,
-    },
     maxMember: {
       type: Number,
       default: 10,
-    },
-    tag: {
-      type: [String],
-      default: [],
-    },
-    duration: {
-      type: Date,
-      default: "",
     },
     meeting: {
       type: Number,
