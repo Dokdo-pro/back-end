@@ -1,27 +1,25 @@
-const albumTogroupSchema = require("./albumTogroupSchema");
+const albumsSchema = require("./albumsSchema");
 const CommentSchema = require("./CommentSchema");
-const GroupPostSchema = require("./GroupPostSchema");
 const postToboardSchema = require("./postToboardSchema");
 const GroupSchema = require("./GroupSchema");
-const groupTotagSchema = require("./groupTotagSchema");
+const tagsSchema = require("./tagsSchema");
 const groupTouserSchema = require("./groupTouserSchema");
 const PostSchema = require("./PostSchema");
-const postTohashtagSchema = require("./postTohashtagSchema");
+const hashtagsSchema = require("./hashtagsSchema");
 const UserSchema = require("./UserSchema");
 const commentTopostSchema = require("./commentTopostSchema");
 const postlikeSchema = require("./postlikeSchema");
 const grouplikeSchema = require("./grouplikeSchema");
 
 module.exports = {
-  albumTogroupSchema,
+  albumsSchema,
   CommentSchema,
-  GroupPostSchema,
   postToboardSchema,
   GroupSchema,
-  groupTotagSchema,
+  tagsSchema,
   groupTouserSchema,
   PostSchema,
-  postTohashtagSchema,
+  hashtagsSchema,
   UserSchema,
   commentTopostSchema,
   postlikeSchema,
