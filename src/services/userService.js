@@ -38,7 +38,8 @@ class userService {
     const userId = user._id.toString();
     const secretKey = process.env.JWT_SECRET_KEY;
     const token = jwt.sign({ userId, role }, secretKey, { expiresIn: "1h" });
-    return { token };
+    const isAdmin = role === "admin" ? true : false;
+    return { token, isAdmin };
   }
 
   async isDuplicatedId(id) {
