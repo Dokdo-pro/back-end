@@ -57,13 +57,11 @@ class userService {
     return true;
   }
 
-  async deleteUser(userToken) {
-    const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
+  async deleteUser(userId) {
     return await this.userModel.deleteUser(userId);
   }
 
-  async getUser(userToken) {
-    const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
+  async getUser(userId) {
     const getUser = await this.userModel.findUser(userId);
     const getGroup = await this.groupTouserModel.getGroup(userId);
     return { ...getUser, group: getGroup };
@@ -79,15 +77,13 @@ class userService {
     return user.id;
   }
 
-  async putPassword({ password, userToken }) {
-    const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
+  async putPassword({ password, userId }) {
     const hashedPW = await hashPassword(password);
     const updatePassword = await userModel.findByIdAndUpdatePassword({ userId, hashedPW });
     return "비밀번호 변경 완료";
   }
 
-  async putUser({ userToken, name, address, profile }) {
-    const userId = jwt.verify(userToken, process.env.JWT_SECRET_KEY).userId;
+  async putUser({ userId, name, address, profile }) {
     return userModel.findByIdAndUpdateInfo({ userId, name, address, profile });
   }
 }

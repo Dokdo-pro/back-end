@@ -1,14 +1,14 @@
 const { Schema } = require("mongoose");
 
-const albumTogroupSchema = new Schema(
+const hashtagsSchema = new Schema(
   {
-    groupId: {
-      type: Schema.Types.ObjectId,
-      ref: "Group",
-    },
-    albumId: {
+    postId: {
       type: Schema.Types.ObjectId,
       ref: "Post",
+    },
+    hashtag: {
+      type: String,
+      default: "",
     },
   },
   {
@@ -16,4 +16,4 @@ const albumTogroupSchema = new Schema(
   }
 );
 
-module.exports = albumTogroupSchema;
+module.exports = hashtagsSchema;

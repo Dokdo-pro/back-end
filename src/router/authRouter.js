@@ -61,8 +61,8 @@ router.put(
   "/withdrawal",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userToken = req.cookies.loginToken.token;
-    const deleteUser = await userService.deleteUser(userToken);
+    const userId = req.userId;
+    const deleteUser = await userService.deleteUser(userId);
     res.json(buildResponse(deleteUser));
   })
 );
@@ -71,8 +71,8 @@ router.get(
   "/me",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userToken = req.cookies.loginToken.token;
-    const userInfo = await userService.getUser(userToken);
+    const userId = req.userId;
+    const userInfo = await userService.getUser(userId);
     res.json(buildResponse(userInfo));
   })
 );
@@ -87,12 +87,12 @@ router.get(
 );
 
 router.patch(
-  "/reset-pw",
+  "/password",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userToken = req.cookies.loginToken.token;
+    const userId = req.userId;
     const { password } = req.body;
-    const resetPasssword = await userService.putPassword({ password, userToken });
+    const resetPasssword = await userService.putPassword({ password, userId });
     res.json(buildResponse({ msg: resetPasssword }));
   })
 );
@@ -101,9 +101,9 @@ router.put(
   "/me",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userToken = req.cookies.loginToken.token;
+    const userId = req.userId;
     const { name, address, profile } = req.body;
-    const editInfo = await userService.putUser({ userToken, name, address, profile });
+    const editInfo = await userService.putUser({ userId, name, address, profile });
     res.json(buildResponse(editInfo));
   })
 );
