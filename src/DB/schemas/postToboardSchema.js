@@ -7,9 +7,9 @@ const postToboardSchema = new Schema(
       ref: "Group",
       default: null,
     },
-    boardId: {
+    boardName: {
       type: String,
-      default: "",
+      default: null,
     },
     postId: {
       type: Schema.Types.ObjectId,
