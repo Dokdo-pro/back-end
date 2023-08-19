@@ -26,7 +26,7 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    profile: {
+    profilePic: {
       type: String,
       default: "",
     },
@@ -34,13 +34,6 @@ const UserSchema = new Schema(
       type: String,
       enum: ["user", "admin"],
       default: "user",
-    },
-    likedGroup: {
-      type: Schema.Types.Array,
-      likedGroup: {
-        type: Schema.Types.ObjectId,
-        ref: "Group",
-      },
     },
   },
   {
