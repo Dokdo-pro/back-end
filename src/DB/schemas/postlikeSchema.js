@@ -1,14 +1,14 @@
 const { Schema } = require("mongoose");
 
-const likeSchema = new Schema({
+const postlikeSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "Group",
+    ref: "User",
   },
-  albumId: {
+  postId: {
     type: Schema.Types.ObjectId,
     ref: "Post",
   },
 });
 
-module.exports = likeSchema;
+module.exports = postlikeSchema;
