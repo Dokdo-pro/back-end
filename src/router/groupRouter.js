@@ -9,9 +9,9 @@ router.post(
   "/",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userId = req.userId;
+    const user_id = req.user_id;
     const { name, profile, maxMember, tag, duration } = req.body;
-    const postGroup = await groupService.postGroup({ userId, name, profile, maxMember, tag, duration });
+    const postGroup = await groupService.postGroup({ user_id, name, profile, maxMember, tag, duration });
     res.json(buildResponse(postGroup));
   })
 );

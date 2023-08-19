@@ -2,13 +2,13 @@ const { Schema } = require("mongoose");
 
 const commentTopostSchema = new Schema(
   {
-    commentId: {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
+    comment_id: {
+      type: Number,
+      required: true,
     },
-    postId: {
-      type: Schema.Types.ObjectId,
-      ref: "Post",
+    post_id: {
+      type: Number,
+      required: true,
     },
   },
   {

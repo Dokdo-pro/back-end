@@ -2,13 +2,13 @@ const { Schema } = require("mongoose");
 
 const groupTouserSchema = new Schema(
   {
-    groupId: {
-      type: Schema.Types.ObjectId,
-      ref: "Group",
+    group_id: {
+      type: Number,
+      required: true,
     },
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+    user_id: {
+      type: Number,
+      required: true,
     },
   },
   {
