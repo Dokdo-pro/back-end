@@ -1,4 +1,5 @@
 const { Schema } = require("mongoose");
+const { counterSchema, Counter } = require("./counterSchema");
 
 const PostSchema = new Schema(
   {
@@ -10,14 +11,22 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    author: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
   },
   {
     timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
+
+PostSchema.pre("save", function (next) {
+  const doc = this;
+  Counter.findByIdAndUpdate({ _id: "post_id" }, { $inc: { seq: 1 } }, { new: true, upsert: true })
+    .then(function (counter) {
+      doc.post_id = counter.seq;
+      next();
+    })
+    .catch(function (error) {
+      return next(error);
+    });
+});
 
 module.exports = PostSchema;

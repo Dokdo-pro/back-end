@@ -1,13 +1,13 @@
 const { Schema } = require("mongoose");
 
 const postlikeSchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+  user_id: {
+    type: Number,
+    required: true,
   },
-  postId: {
-    type: Schema.Types.ObjectId,
-    ref: "Post",
+  post_id: {
+    type: Number,
+    required: true,
   },
 });
 

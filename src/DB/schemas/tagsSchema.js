@@ -2,9 +2,9 @@ const { Schema } = require("mongoose");
 
 const tagsSchema = new Schema(
   {
-    groupId: {
-      type: Schema.Types.ObjectId,
-      ref: "Group",
+    group_id: {
+      type: Number,
+      required: true,
     },
     tag: {
       type: String,

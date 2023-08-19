@@ -26,14 +26,14 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const { id, password } = req.body;
     const loginResult = await userService.getUserToken({ id, password });
-    res.cookie("loginToken", loginResult.userToken).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
+    res.cookie("loginToken", loginResult.token).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
   })
 );
 
 router.put(
   "/logout",
   asyncHandler(async (req, res, next) => {
-    return res.clearCookie("loginToken").end();
+    return res.clearCookie("loginToken").json({ msg: "로그아웃 성공" });
   })
 );
 
@@ -61,8 +61,8 @@ router.put(
   "/withdrawal",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userId = req.userId;
-    const deleteUser = await userService.deleteUser(userId);
+    const user_id = req.user_id;
+    const deleteUser = await userService.deleteUser(user_id);
     res.json(buildResponse(deleteUser));
   })
 );
@@ -71,8 +71,8 @@ router.get(
   "/me",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userId = req.userId;
-    const userInfo = await userService.getUser(userId);
+    const user_id = req.user_id;
+    const userInfo = await userService.getUser(user_id);
     res.json(buildResponse(userInfo));
   })
 );
@@ -90,9 +90,9 @@ router.patch(
   "/password",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userId = req.userId;
+    const user_id = req.user_id;
     const { password } = req.body;
-    const resetPasssword = await userService.putPassword({ password, userId });
+    const resetPasssword = await userService.putPassword({ password, user_id });
     res.json(buildResponse({ msg: resetPasssword }));
   })
 );
@@ -101,9 +101,9 @@ router.put(
   "/me",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userId = req.userId;
+    const user_id = req.user_id;
     const { name, address, profile } = req.body;
-    const editInfo = await userService.putUser({ userId, name, address, profile });
+    const editInfo = await userService.putUser({ user_id, name, address, profile });
     res.json(buildResponse(editInfo));
   })
 );

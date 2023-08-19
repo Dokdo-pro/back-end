@@ -2,18 +2,17 @@ const { Schema } = require("mongoose");
 
 const postToboardSchema = new Schema(
   {
-    groupboardId: {
-      type: Schema.Types.ObjectId,
-      ref: "Group",
+    group_id: {
+      type: Number,
       default: null,
     },
     boardName: {
       type: String,
       default: null,
     },
-    postId: {
-      type: Schema.Types.ObjectId,
-      ref: "Post",
+    post_id: {
+      type: Number,
+      required: true,
     },
   },
   {

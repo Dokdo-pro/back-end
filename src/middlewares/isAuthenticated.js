@@ -7,8 +7,8 @@ module.exports = (req, res, next) => {
     if (!Token || Token === "null") {
       throw new AppError("Unauthorized", 401, "로그인 후 사용해주세요.");
     }
-    jwt.verify(Token.token, process.env.JWT_SECRET_KEY, (err, decoded) => {
-      req.userId = decoded.userId;
+    jwt.verify(Token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+      req.user_id = decoded.user_id;
     });
     next();
   } catch (error) {

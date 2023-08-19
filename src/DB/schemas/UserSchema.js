@@ -1,7 +1,11 @@
 const { Schema } = require("mongoose");
-
+const { counterSchema, Counter } = require("./counterSchema");
 const UserSchema = new Schema(
   {
+    user_id: {
+      type: Number,
+      unique: true,
+    },
     id: {
       type: String,
       required: true,
@@ -40,5 +44,17 @@ const UserSchema = new Schema(
     timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
   }
 );
+
+UserSchema.pre("save", function (next) {
+  const doc = this;
+  Counter.findByIdAndUpdate({ _id: "user_id" }, { $inc: { seq: 1 } }, { new: true, upsert: true })
+    .then(function (counter) {
+      doc.user_id = counter.seq;
+      next();
+    })
+    .catch(function (error) {
+      return next(error);
+    });
+});
 
 module.exports = UserSchema;
