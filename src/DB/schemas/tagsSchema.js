@@ -1,6 +1,6 @@
 const { Schema } = require("mongoose");
 
-const groupTotagSchema = new Schema(
+const tagsSchema = new Schema(
   {
     groupId: {
       type: Schema.Types.ObjectId,
@@ -16,4 +16,4 @@ const groupTotagSchema = new Schema(
   }
 );
 
-module.exports = groupTotagSchema;
+module.exports = tagsSchema;

@@ -9,9 +9,9 @@ router.post(
   "/",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const userToken = req.cookies.loginToken.token;
+    const userId = req.userId;
     const { name, profile, maxMember, tag, duration } = req.body;
-    const postGroup = await groupService.postGroup({ userToken, name, profile, maxMember, tag, duration });
+    const postGroup = await groupService.postGroup({ userId, name, profile, maxMember, tag, duration });
     res.json(buildResponse(postGroup));
   })
 );
