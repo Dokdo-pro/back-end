@@ -1,12 +1,12 @@
 const { Schema } = require("mongoose");
 
-const albumsSchema = new Schema(
+const userTopostSchema = new Schema(
   {
-    group_id: {
+    user_id: {
       type: Number,
       required: true,
     },
-    album_id: {
+    post_id: {
       type: Number,
       required: true,
     },
@@ -16,4 +16,4 @@ const albumsSchema = new Schema(
   }
 );
 
-module.exports = albumsSchema;
+module.exports = userTopostSchema;

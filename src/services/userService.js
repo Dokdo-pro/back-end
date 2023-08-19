@@ -35,9 +35,9 @@ class userService {
       throw new AppError("Bad Request", 400, "비밀번호를 확인해 주세요.");
     }
     const role = user.role;
-    const userId = user._id.toString();
+    const user_id = user.user_id;
     const secretKey = process.env.JWT_SECRET_KEY;
-    const token = jwt.sign({ userId, role }, secretKey, { expiresIn: "1h" });
+    const token = jwt.sign({ user_id, role }, secretKey, { expiresIn: "1h" });
     const isAdmin = role === "admin" ? true : false;
     return { token, isAdmin };
   }
@@ -58,13 +58,13 @@ class userService {
     return true;
   }
 
-  async deleteUser(userId) {
-    return await this.userModel.deleteUser(userId);
+  async deleteUser(user_id) {
+    return await this.userModel.deleteUser(user_id);
   }
 
-  async getUser(userId) {
-    const getUser = await this.userModel.findUser(userId);
-    const getGroup = await this.groupTouserModel.getGroup(userId);
+  async getUser(user_id) {
+    const getUser = await this.userModel.findUser(user_id);
+    const getGroup = await this.groupTouserModel.getGroup(user_id);
     return { ...getUser, group: getGroup };
   }
 
@@ -78,14 +78,14 @@ class userService {
     return user.id;
   }
 
-  async putPassword({ password, userId }) {
+  async putPassword({ password, user_id }) {
     const hashedPW = await hashPassword(password);
-    const updatePassword = await userModel.findByIdAndUpdatePassword({ userId, hashedPW });
+    const updatePassword = await userModel.findByIdAndUpdatePassword({ user_id, hashedPW });
     return "비밀번호 변경 완료";
   }
 
-  async putUser({ userId, name, address, profile }) {
-    return userModel.findByIdAndUpdateInfo({ userId, name, address, profile });
+  async putUser({ user_id, name, address, profile }) {
+    return userModel.findByIdAndUpdateInfo({ user_id, name, address, profile });
   }
 }
 

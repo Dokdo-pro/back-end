@@ -16,21 +16,19 @@ class UserModel {
   async findByName(name) {
     return await User.findOne({ name: name });
   }
-  async deleteUser(userId) {
-    return await User.findByIdAndUpdate(userId, {
-      isActivated: false,
-    });
+  async deleteUser(user_id) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { isActivated: false } });
   }
-  async findUser(userId) {
-    const user = await User.findById(userId);
+  async findUser(user_id) {
+    const user = await User.findOne({ user_id });
     const { name, email, address, group, profile } = user;
     return { name: name, email: email, address: address, group: group, profile: profile };
   }
-  async findByIdAndUpdatePassword({ userId, hashedPW }) {
-    return await User.findByIdAndUpdate(userId, { password: hashedPW });
+  async findByIdAndUpdatePassword({ user_id, hashedPW }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW } });
   }
-  async findByIdAndUpdateInfo({ userId, name, address, profile }) {
-    const newInfo = await User.findByIdAndUpdate(userId, { name, address, profile });
+  async findByIdAndUpdateInfo({ user_id, name, address, profile }) {
+    const newInfo = await User.findOneAndUpdate({ user_id: user_id }, { $set: { name, address, profile } });
     return { newName: newInfo.name, newAddress: newInfo.address, newProfile: newInfo.profile };
   }
 }

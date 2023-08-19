@@ -2,9 +2,9 @@ const { Schema } = require("mongoose");
 
 const hashtagsSchema = new Schema(
   {
-    postId: {
-      type: Schema.Types.ObjectId,
-      ref: "Post",
+    post_id: {
+      type: Number,
+      required: true,
     },
     hashtag: {
       type: String,
