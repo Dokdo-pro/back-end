@@ -15,4 +15,13 @@ router.post(
     res.json(buildResponse(postGroup));
   })
 );
+
+router.get(
+  "/:group_id",
+  asyncHandler(async (req, res, next) => {
+    const group_id = Number(req.params.group_id);
+    const groupInfo = await groupService.getGroup({ group_id });
+    res.json(buildResponse(groupInfo));
+  })
+);
 module.exports = router;

@@ -17,6 +17,13 @@ class groupService {
     const joinGroup = await this.groupTouserModel.joinGroup({ user_id, group_id });
     return { createGroup, joinGroup };
   }
+  async getGroup({ group_id }) {
+    const group = await this.groupModel.findById(group_id);
+    if (!group) {
+      throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
+    }
+    return group;
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel);
