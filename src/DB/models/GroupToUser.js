@@ -4,15 +4,15 @@ const { groupTouserSchema } = require("../schemas");
 const GroupToUser = model("groupTousers", groupTouserSchema);
 
 class groupTouserModel {
-  async joinGroup({ userId, groupId }) {
-    return await GroupToUser.create({ userId: userId, groupId: groupId });
+  async joinGroup({ user_id, group_id }) {
+    return await GroupToUser.create({ user_id: user_id, group_id: group_id });
   }
-  async getGroup(userId) {
-    const groups = await GroupToUser.find({ userId: userId });
-    const groupIds = groups.map((item) => {
-      return item.groupId.toString();
+  async getGroup(user_id) {
+    const groups = await GroupToUser.find({ user_id: user_id });
+    const group_ids = groups.map((item) => {
+      return item.group_id;
     });
-    return groupIds;
+    return group_ids;
   }
 }
 

@@ -7,8 +7,11 @@ class GroupModel {
   async findByName(name) {
     return await Group.findOne({ name });
   }
-  async create({ userId, name, profile, maxMember, tag, duration }) {
-    return await Group.create({ name, profile, maxMember, tag, duration, leader: userId });
+  async create({ user_id, name, profile, maxMember, tag, duration }) {
+    return await Group.create({ name, profile, maxMember, tag, duration, leader: user_id });
+  }
+  async findById(group_id) {
+    return await Group.findOne({ group_id: group_id });
   }
 }
 
