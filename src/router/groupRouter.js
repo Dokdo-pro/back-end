@@ -24,4 +24,12 @@ router.get(
     res.json(buildResponse(groupInfo));
   })
 );
+
+router.get(
+  "/",
+  asyncHandler(async (req, res, next) => {
+    const groupsInfo = await groupService.getAllGroups();
+    res.json(buildResponse(groupsInfo));
+  })
+);
 module.exports = router;
