@@ -14,6 +14,9 @@ class groupTouserModel {
     });
     return group_ids;
   }
+  async findUserAndGroupById({ user_id, group_id }) {
+    return GroupToUser.findOne({ user_id: user_id, group_id, group_id });
+  }
 }
 
 module.exports = new groupTouserModel();
