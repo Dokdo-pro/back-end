@@ -93,12 +93,34 @@ class userService {
     const group = await this.groupModel.findById(group_id);
     if (!group) {
       throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
-    } else if (!group.isRecruit) {
+    }
+    if (!group.isRecruit) {
       throw new AppError("Bad Request", 400, "모집중인 모임이 아닙니다.");
-    } else if (groupTouserModel.findUserAndGroupById({ user_id, group_id })) {
+    }
+    const groupTouser = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (groupTouser) {
       throw new AppError("Bad Request", 400, "이미 가입한 그룹입니다.");
     }
+    const groupMem = await this.groupTouserModel.getGroupMember(group_id);
+    if (groupMem.length >= group.maxMember) {
+      throw new AppError("Bad Request", 400, "가입할 수 없는 그룹입니다.");
+    }
     return groupTouserModel.joinGroup({ user_id, group_id });
+  }
+
+  async leaveGroup({ user_id, group_id }) {
+    const group = await this.groupModel.findById(group_id);
+    if (!group) {
+      throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
+    }
+    const userLeaveGroup = await this.groupTouserModel.deleteUser({ user_id, group_id });
+    if (userLeaveGroup) {
+      throw new AppError("Bad Request", 400, "가입하지 않은 그룹입니다.");
+    }
+    if (user_id === group.leader) {
+      throw new AppError("Bad Request", 400, "그룹장은 탈퇴가 불가능합니다.");
+    }
+    return userLeaveGroup;
   }
 }
 
