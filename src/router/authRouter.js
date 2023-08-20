@@ -109,13 +109,24 @@ router.put(
 );
 
 router.put(
-  "/:group_id",
+  "/join/:group_id",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
     const user_id = req.user_id;
     const joinGroup = await userService.joinGroup({ user_id, group_id });
     res.json(buildResponse(joinGroup));
+  })
+);
+
+router.delete(
+  "/leave/:group_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const group_id = req.params.group_id;
+    const user_id = req.user_id;
+    const leaveGroup = await userService.leaveGroup({ user_id, group_id });
+    res.json(buildResponse(leaveGroup));
   })
 );
 module.exports = router;
