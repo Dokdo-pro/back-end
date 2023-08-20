@@ -1,13 +1,14 @@
-const { userModel, groupTouserModel } = require("../db/models");
+const { userModel, groupTouserModel, groupModel } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const { hashPassword } = require("../misc/utils");
 const bcrypt = require("bcrypt");
 const AppError = require("../misc/AppError");
 
 class userService {
-  constructor(userModel, groupTouserModel) {
+  constructor(userModel, groupTouserModel, groupModel) {
     this.userModel = userModel;
     this.groupTouserModel = groupTouserModel;
+    this.groupModel = groupModel;
   }
 
   async postUser(userInfo) {
@@ -87,6 +88,18 @@ class userService {
   async putUser({ user_id, name, address, profile }) {
     return userModel.findByIdAndUpdateInfo({ user_id, name, address, profile });
   }
+
+  async joinGroup({ user_id, group_id }) {
+    const group = await this.groupModel.findById(group_id);
+    if (!group) {
+      throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
+    } else if (!group.isRecruit) {
+      throw new AppError("Bad Request", 400, "모집중인 모임이 아닙니다.");
+    } else if (groupTouserModel.findUserAndGroupById({ user_id, group_id })) {
+      throw new AppError("Bad Request", 400, "이미 가입한 그룹입니다.");
+    }
+    return groupTouserModel.joinGroup({ user_id, group_id });
+  }
 }
 
-module.exports = new userService(userModel, groupTouserModel);
+module.exports = new userService(userModel, groupTouserModel, groupModel);

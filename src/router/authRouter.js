@@ -107,4 +107,15 @@ router.put(
     res.json(buildResponse(editInfo));
   })
 );
+
+router.put(
+  "/:group_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const group_id = req.params.group_id;
+    const user_id = req.user_id;
+    const joinGroup = await userService.joinGroup({ user_id, group_id });
+    res.json(buildResponse(joinGroup));
+  })
+);
 module.exports = router;
