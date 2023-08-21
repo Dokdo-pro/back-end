@@ -114,7 +114,7 @@ class userService {
       throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
     }
     const userLeaveGroup = await this.groupTouserModel.deleteUser({ user_id, group_id });
-    if (userLeaveGroup) {
+    if (!userLeaveGroup) {
       throw new AppError("Bad Request", 400, "가입하지 않은 그룹입니다.");
     }
     if (user_id === group.leader) {
