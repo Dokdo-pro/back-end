@@ -129,4 +129,5 @@ router.delete(
     res.json(buildResponse(leaveGroup));
   })
 );
+
 module.exports = router;
