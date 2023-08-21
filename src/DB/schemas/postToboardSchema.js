@@ -4,13 +4,13 @@ const postToboardSchema = new Schema(
   {
     group_id: {
       type: Number,
-      default: null,
-    },
-    boardName: {
-      type: String,
-      default: null,
+      required: true,
     },
     post_id: {
+      type: Number,
+      required: true,
+    },
+    user_id: {
       type: Number,
       required: true,
     },

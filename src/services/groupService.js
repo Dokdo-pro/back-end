@@ -1,5 +1,4 @@
 const { groupModel, groupTouserModel } = require("../db/models");
-const jwt = require("jsonwebtoken");
 const AppError = require("../misc/AppError");
 
 class groupService {
