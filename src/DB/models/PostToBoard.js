@@ -13,6 +13,9 @@ class PostToBoardModel {
   async findPostsByUserId(user_id) {
     return await PostToBoard.find({ user_id: user_id });
   }
+  async findPostByPostId(post_id) {
+    return await PostToBoard.findOne({ post_id: post_id });
+  }
 }
 
 module.exports = new PostToBoardModel();
