@@ -1,10 +1,12 @@
-const { groupModel, groupTouserModel } = require("../db/models");
+const { groupModel, groupTouserModel, postModel, postToboardModel } = require("../db/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
-  constructor(groupModel, groupTouserModel) {
+  constructor(groupModel, groupTouserModel, postModel, postToboardModel) {
     this.groupModel = groupModel;
     this.groupTouserModel = groupTouserModel;
+    this.postModel = postModel;
+    this.postToboardModel = postToboardModel;
   }
 
   async postGroup({ user_id, name, profile, maxMember, tag, duration }) {
@@ -29,6 +31,26 @@ class groupService {
   async getAllGroups() {
     return await this.groupModel.getAllGroups();
   }
+
+  async postPost({ user_id, group_id, title, content }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임 가입 후 이용하실 수 있습니다.");
+    }
+    const createPost = await this.postModel.create({ user_id, group_id, title, content });
+    const post_id = createPost.post_id;
+    const postToboard = await this.postToboardModel.create({ post_id, user_id, group_id });
+    return { createPost, postToboard };
+  }
+
+  async getPosts({ user_id, group_id }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임 가입 후 이용하실 수 있습니다.");
+    }
+    const getPosts = await this.postToboardModel.findPostsByGroupId(group_id);
+    return getPosts;
+  }
 }
 
-module.exports = new groupService(groupModel, groupTouserModel);
+module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel);

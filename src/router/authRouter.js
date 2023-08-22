@@ -8,14 +8,14 @@ const router = Router();
 router.post(
   "/register",
   asyncHandler(async (req, res, next) => {
-    const { id, password, name, email, address, profile } = req.body;
+    const { email, password, name, introduction, phone, gender } = req.body;
     const newUser = await userService.postUser({
-      id,
+      email,
       password,
       name,
-      email,
-      address,
-      profile,
+      introduction,
+      phone,
+      gender,
     });
     res.json(buildResponse(newUser));
   })
@@ -24,8 +24,8 @@ router.post(
 router.post(
   "/login",
   asyncHandler(async (req, res, next) => {
-    const { id, password } = req.body;
-    const loginResult = await userService.getUserToken({ id, password });
+    const { email, password } = req.body;
+    const loginResult = await userService.getUserToken({ email, password });
     res.cookie("loginToken", loginResult.token).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
   })
 );
@@ -38,22 +38,11 @@ router.put(
 );
 
 router.get(
-  "/checkDupId",
+  "/users",
   asyncHandler(async (req, res, next) => {
-    const { id } = req.body;
-    const isDuplicated = await userService.isDuplicatedId(id);
-    const msg = isDuplicated ? "사용 가능한 아이디입니다." : "이미 사용중인 아이디입니다.";
-    res.json(buildResponse({ isDuplicated: isDuplicated, msg: msg }));
-  })
-);
-
-router.get(
-  "/checkDupName",
-  asyncHandler(async (req, res, next) => {
-    const { name } = req.body;
-    const isDuplicated = await userService.isDuplicatedName(name);
-    const msg = isDuplicated ? "사용 가능한 이름입니다." : "이미 사용중인 이름입니다.";
-    res.json(buildResponse({ isDuplicated: isDuplicated, msg: msg }));
+    const email = req.query.email;
+    const isExist = await userService.isDuplicatedEmail(email);
+    res.json(buildResponse({ isExist: isExist }));
   })
 );
 
@@ -62,7 +51,8 @@ router.put(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const deleteUser = await userService.deleteUser(user_id);
+    const password = req.body.password;
+    const deleteUser = await userService.deleteUser({ user_id, password });
     res.json(buildResponse(deleteUser));
   })
 );
@@ -77,39 +67,29 @@ router.get(
   })
 );
 
-router.get(
-  "/id",
-  asyncHandler(async (req, res, next) => {
-    const { email } = req.body;
-    const userId = await userService.getUserId(email);
-    res.json(buildResponse({ userId: userId }));
-  })
-);
-
-router.patch(
-  "/password",
-  isAuthenticated,
-  asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
-    const { password } = req.body;
-    const resetPasssword = await userService.putPassword({ password, user_id });
-    res.json(buildResponse({ msg: resetPasssword }));
-  })
-);
-
 router.put(
   "/me",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const { name, address, profile } = req.body;
-    const editInfo = await userService.putUser({ user_id, name, address, profile });
+    const { password, name, profilePic, introduction, phone, gender } = req.body;
+    const editInfo = await userService.putUser({ user_id, password, name, profilePic, introduction, phone, gender });
     res.json(buildResponse(editInfo));
   })
 );
 
+router.get(
+  "/me/posts",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const myPosts = await userService.getMyPosts(user_id);
+    res.json(buildResponse(myPosts));
+  })
+);
+
 router.put(
-  "/join/:group_id",
+  "/group/:group_id",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
@@ -120,7 +100,7 @@ router.put(
 );
 
 router.delete(
-  "/leave/:group_id",
+  "/group/:group_id",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
