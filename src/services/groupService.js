@@ -51,6 +51,14 @@ class groupService {
     const getPosts = await this.postToboardModel.findPostsByGroupId(group_id);
     return getPosts;
   }
+
+  async getPost({ user_id, group_id, post_id }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임 가입 후 이용하실 수 있습니다.");
+    }
+    return await this.postToboardModel.findPostByPostId(post_id);
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel);
