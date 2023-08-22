@@ -32,4 +32,27 @@ router.get(
     res.json(buildResponse(groupsInfo));
   })
 );
+
+router.post(
+  "/:group_id/posts",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const group_id = req.params.group_id;
+    const { title, content } = req.body;
+    const postPost = await groupService.postPost({ user_id, group_id, title, content });
+    res.json(buildResponse(postPost));
+  })
+);
+
+router.get(
+  "/:group_id/posts",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const group_id = req.params.group_id;
+    const getPosts = await groupService.getPosts({ user_id, group_id });
+    res.json(buildResponse(getPosts));
+  })
+);
 module.exports = router;

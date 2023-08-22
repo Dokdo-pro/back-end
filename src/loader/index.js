@@ -1,23 +1,23 @@
 //mongoose, 외부 시스템 연동 등 client 객체들 초기화
-const mongoose = require('mongoose');
-const config = require('../config');
+const mongoose = require("mongoose");
+const config = require("../config");
 
 // mongoose로 mongoDB 연결
 connectMongoDB = async () => {
   // 연결 상태를 체크하기 위한 이벤트 리스너들
-  mongoose.connection.on('connecting', () => {
-    console.log('Mongoose가 MongoDB 서버에 연결중입니다!');
+  mongoose.connection.on("connecting", () => {
+    console.log("Mongoose가 MongoDB 서버에 연결중입니다!");
   });
-  mongoose.connection.on('connected', () => {
-    console.log('Mongoose가 MongoDB에 정상적으로 연결되었습니다.');
+  mongoose.connection.on("connected", () => {
+    console.log("Mongoose가 MongoDB에 정상적으로 연결되었습니다.");
   });
-  mongoose.connection.on('disconnecting', () => {
-    console.log('Mongoose가 MongoDB와의 연결을 끊고 있습니다!');
+  mongoose.connection.on("disconnecting", () => {
+    console.log("Mongoose가 MongoDB와의 연결을 끊고 있습니다!");
   });
-  mongoose.connection.on('disconnected', () => {
-    console.log('Mongoose가 MongoDB와의 연결을 정상적으로 끊었습니다.');
+  mongoose.connection.on("disconnected", () => {
+    console.log("Mongoose가 MongoDB와의 연결을 정상적으로 끊었습니다.");
   });
-  mongoose.connection.on('error', (error) => {
+  mongoose.connection.on("error", (error) => {
     console.log(`Mongoose에서 에러가 발생하였습니다: ${error}`);
   });
 

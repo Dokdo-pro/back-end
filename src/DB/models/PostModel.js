@@ -5,8 +5,7 @@ const Post = model("posts", PostSchema);
 
 class PostModel {
   async create({ title, content }) {
-    const post = await Post.create({ title: title, content: content });
-    return post.post_id;
+    return await Post.create({ title: title, content: content });
   }
 }
 
