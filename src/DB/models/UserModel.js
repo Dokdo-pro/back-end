@@ -10,9 +10,6 @@ class UserModel {
   async create(user) {
     return await User.create(user);
   }
-  async findById(id) {
-    return await User.findOne({ id });
-  }
   async findByName(name) {
     return await User.findOne({ name: name });
   }
@@ -20,16 +17,10 @@ class UserModel {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { isActivated: false } });
   }
   async findUser(user_id) {
-    const user = await User.findOne({ user_id });
-    const { name, email, address, group, profile } = user;
-    return { name: name, email: email, address: address, group: group, profile: profile };
+    return await User.findOne({ user_id });
   }
-  async findByIdAndUpdatePassword({ user_id, hashedPW }) {
-    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW } });
-  }
-  async findByIdAndUpdateInfo({ user_id, name, address, profile }) {
-    const newInfo = await User.findOneAndUpdate({ user_id: user_id }, { $set: { name, address, profile } });
-    return { newName: newInfo.name, newAddress: newInfo.address, newProfile: newInfo.profile };
+  async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction, phone, gender }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction, phone, gender } });
   }
 }
 
