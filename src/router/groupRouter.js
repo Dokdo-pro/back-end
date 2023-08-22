@@ -55,4 +55,16 @@ router.get(
     res.json(buildResponse(getPosts));
   })
 );
+
+router.get(
+  "/:group_id/posts/:post_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const group_id = req.params.group_id;
+    const post_id = req.params.post_id;
+    const getPost = await groupService.getPost({ user_id, group_id, post_id });
+    res.json(buildResponse(getPost));
+  })
+);
 module.exports = router;
