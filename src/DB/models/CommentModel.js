@@ -7,6 +7,9 @@ class CommentModel {
   async create(text) {
     return await Comment.create({ text });
   }
+  async delete(comment_id) {
+    return await Comment.findOneAndUpdate({ comment_id }, { $set: { isDeleted: true } }, { new: true });
+  }
 }
 
 module.exports = new CommentModel();

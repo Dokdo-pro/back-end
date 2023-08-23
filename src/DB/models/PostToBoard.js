@@ -1,5 +1,6 @@
 const { model } = require("mongoose");
 const { postToboardSchema } = require("../schemas");
+const AppError = require("../../misc/AppError");
 
 const PostToBoard = model("postToboards", postToboardSchema);
 

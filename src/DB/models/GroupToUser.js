@@ -1,5 +1,6 @@
 const { model } = require("mongoose");
 const { groupTouserSchema } = require("../schemas");
+const AppError = require("../../misc/AppError");
 
 const GroupToUser = model("groupTousers", groupTouserSchema);
 
@@ -17,7 +18,11 @@ class groupTouserModel {
   }
 
   async findUserAndGroupById({ user_id, group_id }) {
-    return await GroupToUser.findOne({ user_id: user_id, group_id, group_id });
+    const userTogroup = await GroupToUser.findOne({ user_id: user_id, group_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
+    return userTogroup;
   }
 
   async deleteUser({ user_id, group_id }) {

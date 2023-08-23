@@ -61,17 +61,7 @@ class userService {
   async getUser(user_id) {
     const getUser = await this.userModel.findUser(user_id);
     const getGroup = await this.groupTouserModel.getGroup(user_id);
-    return { ...getUser, group: getGroup };
-  }
-
-  async getUserId(email) {
-    const user = await userModel.findByEmail(email);
-    if (!user) {
-      throw new AppError("Bad Request", 400, "가입되지 않은 이메일입니다.");
-    } else if (!user.isActivated) {
-      throw new AppError("Bad Request", 400, "탈퇴한 회원입니다.");
-    }
-    return user.id;
+    return { getUser, group: getGroup };
   }
 
   async putUser({ user_id, password, name, profilePic, introduction }) {
