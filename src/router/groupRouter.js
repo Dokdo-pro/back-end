@@ -119,9 +119,43 @@ router.put(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const { group_id, post_id, comment_id } = req.params;
-    const deleteComments = await groupService.deleteComment({ user_id, group_id, post_id, comment_id });
+    const { group_id, comment_id } = req.params;
+    const deleteComments = await groupService.deleteComment({ user_id, group_id, comment_id });
     res.json(buildResponse(deleteComments));
+  })
+);
+
+router.post(
+  "/:group_id/posts/:post_id/comments/:comment_id/reply",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, comment_id } = req.params;
+    const { text } = req.body;
+    const postReply = await groupService.postReply({ user_id, group_id, parentComment_id: comment_id, text });
+    res.json(buildResponse(postReply));
+  })
+);
+
+router.get(
+  "/:group_id/posts/:post_id/comments/:comment_id/reply",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, comment_id } = req.params;
+    const getReplies = await groupService.getReplies({ user_id, group_id, comment_id });
+    res.json(buildResponse(getReplies));
+  })
+);
+
+router.put(
+  "/:group_id/posts/:post_id/comments/:comment_id/reply/:reply_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, reply_id } = req.params;
+    const deleteReply = await groupService.deleteReply({ user_id, group_id, reply_id });
+    res.json(buildResponse(deleteReply));
   })
 );
 module.exports = router;
