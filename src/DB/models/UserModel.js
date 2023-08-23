@@ -14,13 +14,13 @@ class UserModel {
     return await User.findOne({ name: name });
   }
   async deleteUser(user_id) {
-    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { isActivated: false } });
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { isActivated: false } }, { new: true });
   }
   async findUser(user_id) {
     return await User.findOne({ user_id });
   }
   async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction, phone, gender }) {
-    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction, phone, gender } });
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction, phone, gender } }, { new: true });
   }
 }
 
