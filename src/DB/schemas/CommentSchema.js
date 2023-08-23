@@ -7,19 +7,11 @@ const CommentSchema = new Schema(
       type: Number,
       unique: true,
     },
-    author: {
-      type: Number,
-      required: true,
-    },
     text: {
       type: String,
       required: true,
     },
-    post_id: {
-      type: Number,
-      required: true,
-    },
-    parent_id: {
+    parentComment_id: {
       type: Number,
       default: null,
     },

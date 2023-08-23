@@ -90,4 +90,17 @@ router.delete(
     res.json(buildResponse(deletePost));
   })
 );
+
+router.post(
+  "/:group_id/posts/:post_id/comments",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const { text } = req.body;
+    const postComment = await groupService.postComment({ user_id, group_id, post_id, text });
+    res.json(buildResponse(postComment));
+  })
+);
+
 module.exports = router;
