@@ -11,10 +11,6 @@ const CommentSchema = new Schema(
       type: String,
       required: true,
     },
-    parentComment_id: {
-      type: Number,
-      default: null,
-    },
     isDeleted: {
       type: Boolean,
       default: false,
