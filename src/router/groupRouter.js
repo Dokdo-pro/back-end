@@ -67,4 +67,27 @@ router.get(
     res.json(buildResponse(getPost));
   })
 );
+
+router.put(
+  "/:group_id/posts/:post_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const { title, content } = req.body;
+    const putPost = await groupService.putPost({ user_id, group_id, post_id, title, content });
+    res.json(buildResponse(putPost));
+  })
+);
+
+router.delete(
+  "/:group_id/posts/:post_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const deletePost = await groupService.deletePost({ user_id, group_id, post_id });
+    res.json(buildResponse(deletePost));
+  })
+);
 module.exports = router;

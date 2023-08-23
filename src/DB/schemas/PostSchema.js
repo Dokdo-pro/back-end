@@ -11,6 +11,10 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
+    post_id: {
+      type: Number,
+      unique: true,
+    },
   },
   {
     timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
