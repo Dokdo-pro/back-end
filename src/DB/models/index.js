@@ -3,6 +3,8 @@ const groupModel = require("./GroupModel");
 const groupTouserModel = require("./GroupToUser");
 const postModel = require("./PostModel");
 const postToboardModel = require("./PostToBoard");
+const commentModel = require("./CommentModel");
+const commentTopostModel = require("./CommentToPost");
 
 module.exports = {
   userModel,
@@ -10,4 +12,6 @@ module.exports = {
   groupTouserModel,
   postModel,
   postToboardModel,
+  commentModel,
+  commentTopostModel,
 };

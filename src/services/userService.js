@@ -74,9 +74,9 @@ class userService {
     return user.id;
   }
 
-  async putUser({ user_id, password, name, profilePic, introduction, phone, gender }) {
+  async putUser({ user_id, password, name, profilePic, introduction }) {
     const hashedPW = await hashPassword(password);
-    return userModel.findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction, phone, gender });
+    return userModel.findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction });
   }
 
   async joinGroup({ user_id, group_id }) {

@@ -1,12 +1,14 @@
-const { groupModel, groupTouserModel, postModel, postToboardModel } = require("../db/models");
+const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel } = require("../db/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
-  constructor(groupModel, groupTouserModel, postModel, postToboardModel) {
+  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel) {
     this.groupModel = groupModel;
     this.groupTouserModel = groupTouserModel;
     this.postModel = postModel;
     this.postToboardModel = postToboardModel;
+    this.commentModel = commentModel;
+    this.commentTopostModel = commentTopostModel;
   }
 
   async postGroup({ user_id, name, profile, maxMember, tag, duration }) {
@@ -89,6 +91,17 @@ class groupService {
     const deletePostToBoard = await this.postToboardModel.delete(post_id);
     return { deletePost, deletePostToBoard };
   }
+
+  async postComment({ user_id, group_id, post_id, text }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임 가입 후 이용하실 수 있습니다.");
+    }
+    const postComment = await this.commentModel.create(text);
+    const comment_id = postComment.comment_id;
+    const postCommentToPost = await this.commentTopostModel.create({ comment_id, post_id, user_id });
+    return { comment_id, postCommentToPost };
+  }
 }
 
-module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel);
+module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel);
