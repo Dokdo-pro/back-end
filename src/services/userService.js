@@ -13,13 +13,9 @@ class userService {
   }
 
   async postUser(userInfo) {
-    const { email, password, name, introduction, phone, gender } = userInfo;
-    const user = await this.userModel.findByEmail(email);
-    if (user) {
-      throw new AppError("Bad Request", 400, "이미 사용중인 이메일입니다.");
-    }
+    const { email, password } = userInfo;
     const hashedPW = await hashPassword(password);
-    const newUser = await this.userModel.create({ email, password: hashedPW, name, introduction, phone, gender });
+    const newUser = await this.userModel.create({ email, password: hashedPW });
     return newUser;
   }
 
