@@ -1,14 +1,15 @@
-const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel } = require("../db/models");
+const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel } = require("../db/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
-  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel) {
+  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel) {
     this.groupModel = groupModel;
     this.groupTouserModel = groupTouserModel;
     this.postModel = postModel;
     this.postToboardModel = postToboardModel;
     this.commentModel = commentModel;
     this.commentTopostModel = commentTopostModel;
+    this.replyModel = replyModel;
   }
 
   async postGroup({ user_id, name, profile, maxMember, tag, duration }) {
@@ -86,7 +87,7 @@ class groupService {
     return await this.commentTopostModel.findCommentsByPostId(post_id);
   }
 
-  async deleteComment({ user_id, group_id, post_id, comment_id }) {
+  async deleteComment({ user_id, group_id, comment_id }) {
     await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
     const comment = await this.commentTopostModel.findCommentByCommentId(comment_id);
     if (user_id !== comment.user_id) {
@@ -94,6 +95,28 @@ class groupService {
     }
     return await this.commentModel.delete(comment_id);
   }
+
+  async postReply({ user_id, group_id, parentComment_id, text }) {
+    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const postReply = await this.commentModel.create(text);
+    const comment_id = postReply.comment_id;
+    return await this.replyModel.create({ comment_id, parentComment_id, user_id });
+  }
+
+  async getReplies({ user_id, group_id, comment_id }) {
+    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const reply_ids = await this.replyModel.getRepliesByCommentId(comment_id);
+    return reply_ids;
+  }
+
+  async deleteReply({ user_id, group_id, reply_id }) {
+    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const reply = await this.replyModel.findReplyByReplyId(reply_id);
+    if (user_id !== reply.user_id) {
+      throw new AppError("Bad Request", 400, "삭제 권한이 없습니다.");
+    }
+    return await this.commentModel.delete(reply_id);
+  }
 }
 
-module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel);
+module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel);
