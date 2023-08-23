@@ -81,6 +81,7 @@ class groupService {
     if (!post) {
       throw new AppError("Bad Request", 400, "존재하지 않는 게시물입니다.");
     }
+
     if (user_id !== post.user_id) {
       throw new AppError("Bad Request", 400, "삭제 권한이 없습니다.");
     }
