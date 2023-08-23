@@ -103,4 +103,25 @@ router.post(
   })
 );
 
+router.get(
+  "/:group_id/posts/:post_id/comments",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const getComments = await groupService.getComments({ user_id, group_id, post_id });
+    res.json(buildResponse(getComments));
+  })
+);
+
+router.put(
+  "/:group_id/posts/:post_id/comments/:comment_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id, comment_id } = req.params;
+    const deleteComments = await groupService.deleteComment({ user_id, group_id, post_id, comment_id });
+    res.json(buildResponse(deleteComments));
+  })
+);
 module.exports = router;

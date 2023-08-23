@@ -13,6 +13,9 @@ class PostModel {
   async delete(post_id) {
     return await Post.deleteOne({ post_id: post_id });
   }
+  async findPostByPostId(post_id) {
+    return await Post.findOne({ post_id });
+  }
 }
 
 module.exports = new PostModel();
