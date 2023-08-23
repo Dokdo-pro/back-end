@@ -19,8 +19,8 @@ class UserModel {
   async findUser(user_id) {
     return await User.findOne({ user_id });
   }
-  async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction, phone, gender }) {
-    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction, phone, gender } }, { new: true });
+  async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction } }, { new: true });
   }
 }
 

@@ -10,6 +10,10 @@ const commentTopostSchema = new Schema(
       type: Number,
       required: true,
     },
+    user_id: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) },
