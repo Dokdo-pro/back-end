@@ -158,4 +158,15 @@ router.put(
     res.json(buildResponse(deleteReply));
   })
 );
+
+router.put(
+  "/:group_id/posts/:post_id/like",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const postLike = await groupService.postLike({ user_id, group_id, post_id });
+    res.json(buildResponse(postLike));
+  })
+);
 module.exports = router;
