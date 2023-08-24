@@ -127,7 +127,7 @@ class userService {
 
   async deleteUser(user_id) {
     const deleteUserFromGroup = await this.groupTouserModel.leaveAllGroup(user_id);
-    const deleteUser = await this.userModel.withdrawalUser(user_id);
+    const deleteUser = await this.userModel.deleteUser(user_id);
     return { deleteUserFromGroup: deleteUserFromGroup, deleteUser: deleteUser };
   }
 }
