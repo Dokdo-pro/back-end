@@ -12,6 +12,11 @@ class postService {
       return { title: item.title, content: item.content, createdAt: item.createdAt, updatedAt: item.updatedAt, post_id: item.post_id };
     });
   }
+
+  async putPost({ post_id, title, content }) {
+    const post = await this.postModel.update({ post_id, title, content });
+    return { title: post.title, content: post.content, createdAt: post.createdAt, updatedAt: post.updatedAt, post_id: post.post_id };
+  }
 }
 
 module.exports = new postService(postModel);
