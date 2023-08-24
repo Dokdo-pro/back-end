@@ -14,7 +14,7 @@ class UserModel {
   async findByName(name) {
     return await User.findOne({ name: name });
   }
-  async deleteUser(user_id) {
+  async withdrawalUser(user_id) {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { isActivated: false } }, { new: true });
   }
   async findUser(user_id) {
@@ -29,6 +29,9 @@ class UserModel {
   }
   async getAllUsers() {
     return await User.find({ role: "user" });
+  }
+  async adminPutUser({ user_id, name, email, profilePic, introduction }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { email, name, profilePic, introduction } }, { new: true });
   }
 }
 

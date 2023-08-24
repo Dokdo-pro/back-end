@@ -48,14 +48,13 @@ class userService {
     return false;
   }
 
-  async deleteUser({ user_id, password }) {
+  async withdrawalUser({ user_id, password }) {
     const user = await this.userModel.findUser(user_id);
-    console.log(user);
     const isPasswordCorrect = bcrypt.compareSync(password, user.password);
     if (!isPasswordCorrect) {
       throw new AppError("Bad Request", 400, "비밀번호를 확인해 주세요.");
     }
-    return await this.userModel.deleteUser(user_id);
+    return await this.userModel.withdrawalUser(user_id);
   }
 
   async getUser(user_id) {
@@ -117,6 +116,11 @@ class userService {
     return users.map((item) => {
       return { name: item.name, email: item.email, user_id: item.user_id };
     });
+  }
+
+  async adminPutUser({ user_id, email, name, profilePic, introduction }) {
+    const putUser = await this.userModel.adminPutUser({ user_id, email, name, profilePic, introduction });
+    return { email: putUser.email, name: putUser.name, profilePic: putUser.profilePic, introduction: putUser.introduction, createdAt: putUser.createdAt, user_id: putUser.user_id };
   }
 }
 
