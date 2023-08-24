@@ -13,11 +13,4 @@ router.get(
   })
 );
 
-// router.put(
-//   "/users/:user_id",
-//   asyncHandler(async (req, res, next) => {
-//     const { user_id } = req.params;
-//     const {}
-//   })
-// );
 module.exports = router;
