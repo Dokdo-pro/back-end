@@ -48,7 +48,7 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const password = req.body.password;
-    const deleteUser = await userService.deleteUser({ user_id, password });
+    const deleteUser = await userService.withdrawalUser({ user_id, password });
     res.json(buildResponse(deleteUser));
   })
 );
