@@ -111,6 +111,13 @@ class userService {
     const user = await this.userModel.findUser(user_id);
     return user.name;
   }
+
+  async getAllUsers() {
+    const users = await this.userModel.getAllUsers();
+    return users.map((item) => {
+      return { name: item.name, email: item.email, user_id: item.user_id };
+    });
+  }
 }
 
 module.exports = new userService(userModel, groupTouserModel, groupModel, postToboardModel);
