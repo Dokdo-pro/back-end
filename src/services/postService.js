@@ -1,9 +1,10 @@
-const { postModel } = require("../DB/models");
+const { postModel, postToboardModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class postService {
-  constructor(postModel) {
+  constructor(postModel, postToboardModel) {
     this.postModel = postModel;
+    this.postToboardModel = postToboardModel;
   }
 
   async getAllPosts() {
@@ -17,6 +18,12 @@ class postService {
     const post = await this.postModel.update({ post_id, title, content });
     return { title: post.title, content: post.content, createdAt: post.createdAt, updatedAt: post.updatedAt, post_id: post.post_id };
   }
+
+  async deletePost(post_id) {
+    const deletePost = await this.postModel.delete(post_id);
+    const deletePostFromGroup = await this.postToboardModel.delete(post_id);
+    return { deletePost: deletePost, deletePostFromGroup: deletePostFromGroup };
+  }
 }
 
-module.exports = new postService(postModel);
+module.exports = new postService(postModel, postToboardModel);

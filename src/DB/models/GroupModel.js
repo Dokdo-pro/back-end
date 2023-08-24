@@ -17,11 +17,17 @@ class GroupModel {
   }
 
   async getOldestGroups() {
-    return await Group.find();
+    const groups = await Group.find();
+    return groups.map((item) => {
+      return { name: item.name, isRecruit: item.isRecruit, profile: item.profile, maxMember: item.maxMember, leadar: item.leader, createdAt: item.createdAt, group_id: item.group_id };
+    });
   }
 
   async getLatestGroups() {
-    return await Group.find().sort({ createdAt: -1 });
+    const groups = await Group.find().sort({ createdAt: -1 });
+    return groups.map((item) => {
+      return { name: item.name, isRecruit: item.isRecruit, profile: item.profile, maxMember: item.maxMember, leadar: item.leader, createdAt: item.createdAt, group_id: item.group_id };
+    });
   }
 }
 
