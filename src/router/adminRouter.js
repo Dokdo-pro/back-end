@@ -40,4 +40,14 @@ router.get(
     res.json(buildResponse(posts));
   })
 );
+
+router.put(
+  "/posts/:post_id",
+  asyncHandler(async (req, res, next) => {
+    const { post_id } = req.params;
+    const { title, content } = req.body;
+    const putPost = await postService.putPost({ post_id, title, content });
+    res.json(buildResponse(putPost));
+  })
+);
 module.exports = router;
