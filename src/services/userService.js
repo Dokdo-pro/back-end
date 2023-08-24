@@ -106,6 +106,11 @@ class userService {
   async getMyPosts(user_id) {
     return await this.postToboardModel.findPostsByUserId(user_id);
   }
+
+  async getUserName(user_id) {
+    const user = await this.userModel.findUser(user_id);
+    return user.name;
+  }
 }
 
 module.exports = new userService(userModel, groupTouserModel, groupModel, postToboardModel);

@@ -1,5 +1,6 @@
 const { model } = require("mongoose");
 const { UserSchema } = require("../schemas");
+const AppError = require("../../misc/AppError");
 
 const User = model("users", UserSchema);
 
@@ -17,7 +18,11 @@ class UserModel {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { isActivated: false } }, { new: true });
   }
   async findUser(user_id) {
-    return await User.findOne({ user_id });
+    const user = await User.findOne({ user_id });
+    if (!user) {
+      throw new AppError("Bad Request", 400, "해당 유자가 존재하지 않습니다.");
+    }
+    return user;
   }
   async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction }) {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction } }, { new: true });
