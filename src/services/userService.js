@@ -1,4 +1,4 @@
-const { userModel, groupTouserModel, groupModel, postToboardModel } = require("../db/models");
+const { userModel, groupTouserModel, groupModel, postToboardModel } = require("../DB/models");
 const jwt = require("jsonwebtoken");
 const { hashPassword } = require("../misc/utils");
 const bcrypt = require("bcrypt");
