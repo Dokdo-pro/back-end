@@ -8,10 +8,13 @@ class commentTopostModel {
     return await CommentToPost.create({ comment_id, post_id, user_id });
   }
   async findCommentsByPostId(post_id) {
-    return await CommentToPost.find({ post_id });
+    const comments = await CommentToPost.find({ post_id });
+    return comments.map((item) => {
+      return item.comment_id;
+    });
   }
   async findCommentByCommentId(comment_id) {
-    return await CommentToPost.findOne({ comment_id });
+    return await CommentToPost.find({ comment_id });
   }
 }
 

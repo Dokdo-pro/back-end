@@ -106,4 +106,16 @@ router.delete(
   })
 );
 
+router.get(
+  "/user/:user_id",
+  asyncHandler(async (req, res, next) => {
+    const { user_id } = req.params;
+    const { name } = req.query;
+    if (name) {
+      const getUserName = await userService.getUserName(user_id);
+      res.json(buildResponse(getUserName));
+    }
+  })
+);
+
 module.exports = router;

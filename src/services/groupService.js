@@ -84,7 +84,12 @@ class groupService {
 
   async getComments({ user_id, group_id, post_id }) {
     await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
-    return await this.commentTopostModel.findCommentsByPostId(post_id);
+    const comments = await this.commentTopostModel.findCommentsByPostId(post_id);
+    return await Promise.all(
+      comments.map((item) => {
+        return this.commentModel.findById(item);
+      })
+    );
   }
 
   async deleteComment({ user_id, group_id, comment_id }) {
@@ -105,8 +110,12 @@ class groupService {
 
   async getReplies({ user_id, group_id, comment_id }) {
     await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
-    const reply_ids = await this.replyModel.getRepliesByCommentId(comment_id);
-    return reply_ids;
+    const replies = await this.replyModel.getRepliesByCommentId(comment_id);
+    return await Promise.all(
+      replies.map((item) => {
+        return this.commentModel.findById(item);
+      })
+    );
   }
 
   async deleteReply({ user_id, group_id, reply_id }) {
