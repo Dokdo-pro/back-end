@@ -6,6 +6,7 @@ const postToboardModel = require("./PostToBoard");
 const commentModel = require("./CommentModel");
 const commentTopostModel = require("./CommentToPost");
 const replyModel = require("./ReplyModel");
+const likeModel = require("./LikeModel");
 
 module.exports = {
   userModel,
@@ -16,4 +17,5 @@ module.exports = {
   commentModel,
   commentTopostModel,
   replyModel,
+  likeModel,
 };
