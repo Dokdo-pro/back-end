@@ -18,8 +18,18 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const { user_id } = req.params;
     const { email, name, profilePic, introduction } = req.body;
+    const { withdrawal } = req.query.withdrawal;
     const putUser = await userService.adminPutUser({ user_id, email, name, profilePic, introduction });
     res.json(buildResponse(putUser));
+  })
+);
+
+router.delete(
+  "/users/:user_id",
+  asyncHandler(async (req, res, next) => {
+    const { user_id } = req.params;
+    const deleteUser = await userService.deleteUser(user_id);
+    res.json(buildResponse(deleteUser));
   })
 );
 module.exports = router;

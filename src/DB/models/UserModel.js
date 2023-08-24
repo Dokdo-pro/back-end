@@ -33,6 +33,9 @@ class UserModel {
   async adminPutUser({ user_id, name, email, profilePic, introduction }) {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { email, name, profilePic, introduction } }, { new: true });
   }
+  async deleteUser(user_id) {
+    return await User.deleteOne({ user_id });
+  }
 }
 
 module.exports = new UserModel();

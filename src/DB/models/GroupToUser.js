@@ -32,6 +32,10 @@ class groupTouserModel {
   async getGroupMember(group_id) {
     return await GroupToUser.find({ group_id: group_id });
   }
+
+  async leaveAllGroup(user_id) {
+    return await GroupToUser.deleteMany({ user_id: user_id });
+  }
 }
 
 module.exports = new groupTouserModel();
