@@ -54,7 +54,9 @@ class userService {
     if (!isPasswordCorrect) {
       throw new AppError("Bad Request", 400, "비밀번호를 확인해 주세요.");
     }
-    return await this.userModel.withdrawalUser(user_id);
+    const deleteUserFromGroup = await this.groupTouserModel.leaveAllGroup(user_id);
+    const withdrawal = await this.userModel.withdrawalUser(user_id);
+    return { deleteUserFromGroup: deleteUserFromGroup, withdrawal: withdrawal };
   }
 
   async getUser(user_id) {
@@ -121,6 +123,12 @@ class userService {
   async adminPutUser({ user_id, email, name, profilePic, introduction }) {
     const putUser = await this.userModel.adminPutUser({ user_id, email, name, profilePic, introduction });
     return { email: putUser.email, name: putUser.name, profilePic: putUser.profilePic, introduction: putUser.introduction, createdAt: putUser.createdAt, user_id: putUser.user_id };
+  }
+
+  async deleteUser(user_id) {
+    const deleteUserFromGroup = await this.groupTouserModel.leaveAllGroup(user_id);
+    const deleteUser = await this.userModel.withdrawalUser(user_id);
+    return { deleteUserFromGroup: deleteUserFromGroup, deleteUser: deleteUser };
   }
 }
 
