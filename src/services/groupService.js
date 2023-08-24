@@ -1,8 +1,8 @@
-const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel } = require("../db/models");
+const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel } = require("../db/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
-  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel) {
+  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel) {
     this.groupModel = groupModel;
     this.groupTouserModel = groupTouserModel;
     this.postModel = postModel;
@@ -10,6 +10,7 @@ class groupService {
     this.commentModel = commentModel;
     this.commentTopostModel = commentTopostModel;
     this.replyModel = replyModel;
+    this.likeModel = likeModel;
   }
 
   async postGroup({ user_id, name, profile, maxMember, tag, duration }) {
@@ -126,6 +127,26 @@ class groupService {
     }
     return await this.commentModel.delete(reply_id);
   }
+
+  async postLike({ user_id, group_id, post_id }) {
+    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    return await this.likeModel.postLike({ user_id, post_id });
+  }
+
+  async getPostLike({ user_id, group_id, post_id }) {
+    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const likes = await this.likeModel.getPostLike(post_id);
+    return likes.length;
+  }
+
+  async groupLike({ user_id, group_id }) {
+    return await this.likeModel.groupLike({ user_id, group_id });
+  }
+
+  async getGroupLike(group_id) {
+    const likes = await this.likeModel.getGroupLike(group_id);
+    return likes.length;
+  }
 }
 
-module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel);
+module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel);
