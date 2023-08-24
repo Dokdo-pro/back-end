@@ -32,8 +32,25 @@ class groupService {
     return group;
   }
 
-  async getAllGroups() {
-    return await this.groupModel.getAllGroups();
+  async getAllGroups(orderBy) {
+    if (orderBy === "oldest") return await this.groupModel.getOldestGroups();
+    if (orderBy === "popularity") {
+      const allGroups = await this.groupModel.getOldestGroups();
+      const groupIds = allGroups.map((item) => {
+        return item.group_id;
+      });
+      const groupAndLikes = await Promise.all(
+        groupIds.map(async (item) => {
+          const likes = await this.likeModel.getGroupLike(item);
+          return { group_id: item, likes: likes.length };
+        })
+      );
+      groupAndLikes.sort((a, b) => {
+        return b.likes - a.likes;
+      });
+      return groupAndLikes;
+    }
+    return await this.groupModel.getLatestGroups();
   }
 
   async postPost({ user_id, group_id, title, content }) {
