@@ -33,6 +33,9 @@ class LikeModel {
     const groups = await GroupLike.find().sort({ group_id: 1 });
     return groups;
   }
+  async getLikedGroup(user_id) {
+    return await GroupLike.find({ user_id: user_id });
+  }
 }
 
 module.exports = new LikeModel();
