@@ -28,7 +28,8 @@ router.get(
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const groupsInfo = await groupService.getAllGroups();
+    const { orderBy } = req.query;
+    const groupsInfo = await groupService.getAllGroups(orderBy);
     res.json(buildResponse(groupsInfo));
   })
 );

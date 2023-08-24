@@ -16,8 +16,12 @@ class GroupModel {
     return await Group.findOne({ group_id: group_id });
   }
 
-  async getAllGroups() {
+  async getOldestGroups() {
     return await Group.find();
+  }
+
+  async getLatestGroups() {
+    return await Group.find().sort({ createdAt: -1 });
   }
 }
 
