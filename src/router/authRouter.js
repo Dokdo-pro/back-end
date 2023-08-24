@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { userService } = require("../services");
+const { userService, groupService } = require("../services");
 const { buildResponse } = require("../misc/utils");
 const { asyncHandler, isAuthenticated } = require("../middlewares");
 
@@ -115,6 +115,16 @@ router.get(
       const getUserName = await userService.getUserName(user_id);
       res.json(buildResponse(getUserName));
     }
+  })
+);
+
+router.get(
+  "/user/likes/groups",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const groups = await groupService.getLikedGroup(user_id);
+    res.json(buildResponse(groups));
   })
 );
 
