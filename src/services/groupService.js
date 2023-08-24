@@ -50,6 +50,10 @@ class groupService {
       });
       return groupAndLikes;
     }
+    if ((orderBy = "random")) {
+      const groups = await this.groupModel.getLatestGroups();
+      return groups.sort(() => Math.random() - 0.5);
+    }
     return await this.groupModel.getLatestGroups();
   }
 
