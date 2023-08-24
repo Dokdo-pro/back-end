@@ -50,4 +50,21 @@ router.put(
     res.json(buildResponse(putPost));
   })
 );
+
+router.delete(
+  "/posts/:post_id",
+  asyncHandler(async (req, res, next) => {
+    const { post_id } = req.params;
+    const deletePost = await postService.deletePost(post_id);
+    res.json(buildResponse(deletePost));
+  })
+);
+
+router.get(
+  "/groups",
+  asyncHandler(async (req, res, next) => {
+    const getAllGroups = await groupService.getAllGroups();
+    res.json(buildResponse(getAllGroups));
+  })
+);
 module.exports = router;
