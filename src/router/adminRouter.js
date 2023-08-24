@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { userService, groupService } = require("../services");
+const { userService, groupService, postService } = require("../services");
 const { buildResponse } = require("../misc/utils");
 const { asyncHandler } = require("../middlewares");
 
@@ -30,6 +30,14 @@ router.delete(
     const { user_id } = req.params;
     const deleteUser = await userService.deleteUser(user_id);
     res.json(buildResponse(deleteUser));
+  })
+);
+
+router.get(
+  "/posts",
+  asyncHandler(async (req, res, next) => {
+    const posts = await postService.getAllPosts();
+    res.json(buildResponse(posts));
   })
 );
 module.exports = router;

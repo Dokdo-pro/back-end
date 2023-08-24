@@ -16,6 +16,9 @@ class PostModel {
   async findPostByPostId(post_id) {
     return await Post.findOne({ post_id });
   }
+  async getAllPosts() {
+    return await Post.find();
+  }
 }
 
 module.exports = new PostModel();
