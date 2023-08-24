@@ -169,4 +169,36 @@ router.put(
     res.json(buildResponse(postLike));
   })
 );
+
+router.get(
+  "/:group_id/posts/:post_id/like",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const getPostLike = await groupService.getPostLike({ user_id, group_id, post_id });
+    res.json(buildResponse({ likeNum: getPostLike }));
+  })
+);
+
+router.put(
+  "/:group_id/like",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id } = req.params;
+    const groupLike = await groupService.groupLike({ user_id, group_id });
+    res.json(buildResponse(groupLike));
+  })
+);
+
+router.get(
+  "/:group_id/like",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const { group_id } = req.params;
+    const getGroupLike = await groupService.getGroupLike(group_id);
+    res.json(buildResponse({ likesNum: getGroupLike }));
+  })
+);
 module.exports = router;

@@ -5,7 +5,7 @@ const grouplikeSchema = new Schema({
     type: Number,
     required: true,
   },
-  post_id: {
+  group_id: {
     type: Number,
     required: true,
   },
