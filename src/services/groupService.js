@@ -164,6 +164,10 @@ class groupService {
     const likes = await this.likeModel.getGroupLike(group_id);
     return likes.length;
   }
+
+  async getLikedGroup(user_id) {
+    return await this.likeModel.getLikedGroup(user_id);
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel);
