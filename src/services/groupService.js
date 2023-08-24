@@ -1,4 +1,4 @@
-const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel } = require("../db/models");
+const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
