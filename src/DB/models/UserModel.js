@@ -27,6 +27,9 @@ class UserModel {
   async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction }) {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction } }, { new: true });
   }
+  async getAllUsers() {
+    return await User.find({ role: "user" });
+  }
 }
 
 module.exports = new UserModel();
