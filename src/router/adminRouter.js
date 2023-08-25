@@ -59,12 +59,20 @@ router.delete(
     res.json(buildResponse(deletePost));
   })
 );
-
 router.get(
   "/groups",
   asyncHandler(async (req, res, next) => {
     const getAllGroups = await groupService.getAllGroups();
     res.json(buildResponse(getAllGroups));
+  })
+);
+
+router.delete(
+  "/groups/:group_id",
+  asyncHandler(async (req, res, next) => {
+    const { group_id } = req.params;
+    const deleteGroup = await groupService.deleteGroup(group_id);
+    res.json(buildResponse(deleteGroup));
   })
 );
 module.exports = router;
