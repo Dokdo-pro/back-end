@@ -1,6 +1,6 @@
 const { userModel, groupTouserModel, groupModel, postToboardModel } = require("../DB/models");
 const jwt = require("jsonwebtoken");
-const { hashPassword } = require("../misc/utils");
+const { hashPassword, randomName } = require("../misc/utils");
 const bcrypt = require("bcrypt");
 const AppError = require("../misc/AppError");
 
@@ -15,7 +15,7 @@ class userService {
   async postUser(userInfo) {
     const { email, password } = userInfo;
     const hashedPW = await hashPassword(password);
-    const newUser = await this.userModel.create({ email, password: hashedPW });
+    const newUser = await this.userModel.create({ email, password: hashedPW, name: randomName() });
     return newUser;
   }
 

@@ -18,11 +18,7 @@ class groupTouserModel {
   }
 
   async findUserAndGroupById({ user_id, group_id }) {
-    const userTogroup = await GroupToUser.findOne({ user_id: user_id, group_id, group_id });
-    if (!userTogroup) {
-      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
-    }
-    return userTogroup;
+    return await GroupToUser.findOne({ user_id: user_id, group_id, group_id });
   }
 
   async deleteUser({ user_id, group_id }) {
@@ -35,6 +31,10 @@ class groupTouserModel {
 
   async leaveAllGroup(user_id) {
     return await GroupToUser.deleteMany({ user_id: user_id });
+  }
+
+  async deleteGroupToUser(group_id) {
+    return await GroupToUser.deleteMany({ group_id: group_id });
   }
 }
 
