@@ -65,9 +65,9 @@ class userService {
     return { getUser, group: getGroup };
   }
 
-  async putUser({ user_id, password, name, profilePic, introduction }) {
+  async putUser({ user_id, password, name, introduction }) {
     const hashedPW = await hashPassword(password);
-    return userModel.findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction });
+    return userModel.findByIdAndUpdateInfo({ user_id, hashedPW, name, introduction });
   }
 
   async joinGroup({ user_id, group_id }) {
@@ -129,6 +129,10 @@ class userService {
     const deleteUserFromGroup = await this.groupTouserModel.leaveAllGroup(user_id);
     const deleteUser = await this.userModel.deleteUser(user_id);
     return { deleteUserFromGroup: deleteUserFromGroup, deleteUser: deleteUser };
+  }
+
+  async putProfile({ user_id, profilePic }) {
+    return await this.userModel.updateProfile({ user_id, profilePic });
   }
 }
 

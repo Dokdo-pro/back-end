@@ -2,8 +2,8 @@ const express = require("express");
 const authRouter = require("./authRouter");
 const groupRouter = require("./groupRouter");
 const postRouter = require("./postRouter");
-const imageRouter = require("./imageRouter");
 const adminRouter = require("./adminRouter");
+const imageRouter = require("./imageRouter");
 const { isAuthenticated, isAdmin } = require("../middlewares");
 
 // 버전1 라우터
