@@ -58,7 +58,10 @@ class groupService {
   }
 
   async postPost({ user_id, group_id, title, content }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const createPost = await this.postModel.create({ group_id, title, content });
     const post_id = createPost.post_id;
     const postToboard = await this.postToboardModel.create({ post_id, user_id, group_id });
@@ -66,18 +69,27 @@ class groupService {
   }
 
   async getPosts({ user_id, group_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const getPosts = await this.postToboardModel.findPostsByGroupId(group_id);
     return getPosts;
   }
 
   async getPost({ user_id, group_id, post_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     return await this.postModel.findPostByPostId(post_id);
   }
 
   async putPost({ user_id, group_id, post_id, title, content }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const post = await this.postToboardModel.findPostByPostId(post_id);
     if (user_id !== post.user_id) {
       throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
@@ -86,7 +98,10 @@ class groupService {
   }
 
   async deletePost({ user_id, group_id, post_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const post = await this.postToboardModel.findPostByPostId(post_id);
     if (user_id !== post.user_id) {
       throw new AppError("Bad Request", 400, "삭제 권한이 없습니다.");
@@ -97,7 +112,10 @@ class groupService {
   }
 
   async postComment({ user_id, group_id, post_id, text }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const postComment = await this.commentModel.create(text);
     const comment_id = postComment.comment_id;
     const postCommentToPost = await this.commentTopostModel.create({ comment_id, post_id, user_id });
@@ -105,7 +123,10 @@ class groupService {
   }
 
   async getComments({ user_id, group_id, post_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const comments = await this.commentTopostModel.findCommentsByPostId(post_id);
     return await Promise.all(
       comments.map((item) => {
@@ -115,7 +136,10 @@ class groupService {
   }
 
   async deleteComment({ user_id, group_id, comment_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const comment = await this.commentTopostModel.findCommentByCommentId(comment_id);
     if (user_id !== comment.user_id) {
       throw new AppError("Bad Request", 400, "삭제 권한이 없습니다.");
@@ -124,14 +148,20 @@ class groupService {
   }
 
   async postReply({ user_id, group_id, parentComment_id, text }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const postReply = await this.commentModel.create(text);
     const comment_id = postReply.comment_id;
     return await this.replyModel.create({ comment_id, parentComment_id, user_id });
   }
 
   async getReplies({ user_id, group_id, comment_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const replies = await this.replyModel.getRepliesByCommentId(comment_id);
     return await Promise.all(
       replies.map((item) => {
@@ -141,7 +171,10 @@ class groupService {
   }
 
   async deleteReply({ user_id, group_id, reply_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const reply = await this.replyModel.findReplyByReplyId(reply_id);
     if (user_id !== reply.user_id) {
       throw new AppError("Bad Request", 400, "삭제 권한이 없습니다.");
@@ -150,12 +183,18 @@ class groupService {
   }
 
   async postLike({ user_id, group_id, post_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     return await this.likeModel.postLike({ user_id, post_id });
   }
 
   async getPostLike({ user_id, group_id, post_id }) {
-    await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
     const likes = await this.likeModel.getPostLike(post_id);
     return likes.length;
   }
@@ -171,6 +210,12 @@ class groupService {
 
   async getLikedGroup(user_id) {
     return await this.likeModel.getLikedGroup(user_id);
+  }
+
+  async deleteGroup(group_id) {
+    const deleteGroup = await this.groupModel.delete(group_id);
+    const deleteGroupToUser = await this.groupTouserModel.deleteGroupToUser(group_id);
+    return { deleteGroup: deleteGroup, deleteGroupToUser: deleteGroupToUser };
   }
 }
 

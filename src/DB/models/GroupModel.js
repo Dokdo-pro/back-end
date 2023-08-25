@@ -29,6 +29,10 @@ class GroupModel {
       return { name: item.name, isRecruit: item.isRecruit, profile: item.profile, maxMember: item.maxMember, leadar: item.leader, createdAt: item.createdAt, group_id: item.group_id };
     });
   }
+
+  async delete(group_id) {
+    return await Group.deleteOne({ group_id: group_id });
+  }
 }
 
 module.exports = new GroupModel();
