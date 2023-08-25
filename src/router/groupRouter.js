@@ -37,6 +37,16 @@ router.put(
   })
 );
 
+router.delete(
+  "/:group_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const group_id = req.params.group_id;
+    const user_id = req.user_id;
+    const deleteGroup = await groupService.deleteGroup({ group_id, user_id });
+    res.json(buildResponse(deleteGroup));
+  })
+);
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
