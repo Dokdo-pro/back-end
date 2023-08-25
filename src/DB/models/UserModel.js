@@ -24,8 +24,8 @@ class UserModel {
     }
     return user;
   }
-  async findByIdAndUpdateInfo({ user_id, hashedPW, name, profilePic, introduction }) {
-    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, profilePic, introduction } }, { new: true });
+  async findByIdAndUpdateInfo({ user_id, hashedPW, name, introduction }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, introduction } }, { new: true });
   }
   async getAllUsers() {
     return await User.find({ role: "user" });
@@ -35,6 +35,10 @@ class UserModel {
   }
   async deleteUser(user_id) {
     return await User.deleteOne({ user_id });
+  }
+  async updateProfile({ user_id, profilePic }) {
+    const user = await User.findOneAndUpdate({ user_id }, { $set: { profilePic } }, { new: true });
+    return user.profilePic;
   }
 }
 
