@@ -81,7 +81,7 @@ router.put(
   uploadProfile.single("img"),
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const profilePic = req.file.path;
+    const profilePic = req.file.filename;
     const editProflie = await userService.putProfile({ user_id, profilePic });
     res.json(buildResponse(editProflie));
   })

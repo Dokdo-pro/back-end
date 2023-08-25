@@ -1,19 +1,12 @@
 const { Router } = require("express");
+const path = require("path");
 const { asyncHandler } = require("../middlewares");
-// const upload = require("../misc/multer");
 
 const router = Router();
 
-// router.post(
-//   "/",
-//   upload.single("pic"),
-//   asyncHandler(async (req, res, next) => {
-//     console.log(req.file);
-//   })
-// );
-
-router.get("/", (req, res, next) => {
-  res.send("파일 다운로드 완료");
+router.get("/profile/:src", (req, res, next) => {
+  const { src } = req.params;
+  res.sendFile(path.join(__dirname, "../../uploads/profiles/", src));
 });
 
 module.exports = router;
