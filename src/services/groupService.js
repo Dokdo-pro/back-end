@@ -214,7 +214,14 @@ class groupService {
     return await this.likeModel.getLikedGroup(user_id);
   }
 
-  async deleteGroup(group_id) {
+  async deleteGroup({ group_id, user_id }) {
+    if (user_id) {
+      const group = await this.groupModel.findById(group_id);
+      const leader = group.leader;
+      if (leader !== user_id) {
+        throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
+      }
+    }
     const deleteGroup = await this.groupModel.delete(group_id);
     const deleteGroupToUser = await this.groupTouserModel.deleteGroupToUser(group_id);
     return { deleteGroup: deleteGroup, deleteGroupToUser: deleteGroupToUser };
