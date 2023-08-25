@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { userService, groupService } = require("../services");
 const { buildResponse } = require("../misc/utils");
+const { uploadProfile } = require("../misc/multer");
 const { asyncHandler, isAuthenticated } = require("../middlewares");
 
 const router = Router();
@@ -68,9 +69,21 @@ router.put(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const { password, name, profilePic, introduction } = req.body;
-    const editInfo = await userService.putUser({ user_id, password, name, profilePic, introduction });
+    const { password, name, introduction } = req.body;
+    const editInfo = await userService.putUser({ user_id, password, name, introduction });
     res.json(buildResponse(editInfo));
+  })
+);
+
+router.put(
+  "/me/profilePic",
+  isAuthenticated,
+  uploadProfile.single("img"),
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const profilePic = req.file.path;
+    const editProflie = await userService.putProfile({ user_id, profilePic });
+    res.json(buildResponse(editProflie));
   })
 );
 
