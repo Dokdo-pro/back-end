@@ -19,9 +19,21 @@ router.post(
 router.get(
   "/:group_id",
   asyncHandler(async (req, res, next) => {
-    const group_id = Number(req.params.group_id);
+    const group_id = req.params.group_id;
     const groupInfo = await groupService.getGroup({ group_id });
     res.json(buildResponse(groupInfo));
+  })
+);
+
+router.put(
+  "/:group_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const group_id = req.params.group_id;
+    const user_id = req.user_id;
+    const { name, profile, maxMember, tags } = req.body;
+    const putGroup = await groupService.putGroup({ group_id, name, profile, maxMember, tags, user_id });
+    res.json(buildResponse(putGroup));
   })
 );
 
@@ -202,4 +214,5 @@ router.get(
     res.json(buildResponse({ likesNum: getGroupLike }));
   })
 );
+
 module.exports = router;

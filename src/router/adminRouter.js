@@ -75,4 +75,14 @@ router.delete(
     res.json(buildResponse(deleteGroup));
   })
 );
+
+router.put(
+  "/groups/:group_id",
+  asyncHandler(async (req, res, next) => {
+    const { group_id } = req.params;
+    const { name, profile, maxMember, tags } = req.body;
+    const putGroup = await groupService.adminPutGroup({ isAdmin: true, group_id, name, profile, maxMember, tags });
+    res.json(buildResponse(putGroup));
+  })
+);
 module.exports = router;
