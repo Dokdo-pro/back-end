@@ -57,8 +57,8 @@ class GroupModel {
     return await Group.deleteOne({ group_id: group_id });
   }
 
-  async update({ group_id, name, profile, maxMember }) {
-    return await Group.findOneAndUpdate({ group_id }, { $set: { name, profile, maxMember } }, { new: true });
+  async update({ group_id, name, introduction }) {
+    return await Group.findOneAndUpdate({ group_id }, { $set: { name, introduction } }, { new: true });
   }
 
   async updateTags({ group_id, tags }) {
@@ -68,6 +68,14 @@ class GroupModel {
         return tag.tag;
       })
     );
+  }
+
+  async getSearches(group_id) {
+    return await GroupSearch.find({ group_id });
+  }
+
+  async updateSearch({ group_id, place, location, day, genre, age }) {
+    return await GroupSearch.findOneAndUpdate({ group_id }, { $set: { place, location, day, genre, age } }, { new: true });
   }
 }
 

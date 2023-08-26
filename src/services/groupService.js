@@ -30,7 +30,8 @@ class groupService {
       throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
     }
     const tags = await this.groupModel.getTags(group_id);
-    return { group, tags };
+    const searches = await this.groupModel.getSearches(group_id);
+    return { group, tags, searches };
   }
 
   async getAllGroups(orderBy) {
@@ -227,7 +228,7 @@ class groupService {
     return { deleteGroup: deleteGroup, deleteGroupToUser: deleteGroupToUser };
   }
 
-  async putGroup({ group_id, name, profile, maxMember, tags, user_id }) {
+  async putGroup({ group_id, user_id, name, tags, introduction, place, location, day, genre, age }) {
     if (user_id) {
       const group = await this.groupModel.findById(group_id);
       const leader = group.leader;
@@ -235,9 +236,10 @@ class groupService {
         throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
       }
     }
-    const putGroup = await this.groupModel.update({ group_id, name, profile, maxMember });
+    const putGroup = await this.groupModel.update({ group_id, name, introduction });
     const putTag = await this.groupModel.updateTags({ group_id, tags });
-    return { putGroup, putTag };
+    const putSearch = await this.groupModel.updateSearch({ group_id, place, location, day, genre, age });
+    return { putGroup, putTag, putSearch };
   }
 }
 
