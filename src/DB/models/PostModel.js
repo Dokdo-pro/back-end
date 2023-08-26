@@ -4,8 +4,8 @@ const { PostSchema } = require("../schemas");
 const Post = model("posts", PostSchema);
 
 class PostModel {
-  async create({ title, content }) {
-    return await Post.create({ title: title, content: content });
+  async create({ title, content, images }) {
+    return await Post.create({ title: title, content: content, images: images });
   }
   async update({ post_id, title, content }) {
     return await Post.findOneAndUpdate({ post_id: post_id }, { $set: { title: title, content: content } }, { new: true });
