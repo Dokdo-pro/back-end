@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { groupService } = require("../services");
 const { asyncHandler, isAuthenticated } = require("../middlewares");
 const { buildResponse } = require("../misc/utils");
+const { uploadProfile } = require("../misc/multer");
 
 const router = Router();
 
@@ -37,6 +38,19 @@ router.put(
   })
 );
 
+router.put(
+  "/:group_id/profilePic",
+  isAuthenticated,
+  uploadProfile.single("img"),
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id } = req.params;
+    const profilePic = req.file.filename;
+    const editProflie = await groupService.putProfile({ group_id, user_id, profilePic });
+    res.json(buildResponse(editProflie));
+  })
+);
+
 router.delete(
   "/:group_id",
   isAuthenticated,
@@ -47,6 +61,7 @@ router.delete(
     res.json(buildResponse(deleteGroup));
   })
 );
+
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
