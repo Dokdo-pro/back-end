@@ -30,9 +30,7 @@ class groupService {
     if (!group) {
       throw new AppError("Bad Request", 400, "존재하지 않는 그룹입니다.");
     }
-    const tags = await this.groupModel.getTags(group_id);
-    const searches = await this.groupModel.getSearches(group_id);
-    return { group, tags, searches };
+    return group;
   }
 
   async getGroups(orderBy, condition) {
