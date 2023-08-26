@@ -76,7 +76,8 @@ class GroupModel {
   }
 
   async updateProfile({ group_id, profilePic }) {
-    return await Group.findOneAndUpdate({ group_id }, { $set: { profile: profilePic } }, { new: true });
+    const group = await Group.findOneAndUpdate({ group_id }, { $set: { profile: profilePic } }, { new: true });
+    return group.profile;
   }
 }
 
