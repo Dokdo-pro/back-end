@@ -1,4 +1,5 @@
 const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel } = require("../DB/models");
+const { get } = require("../DB/schemas/albumsSchema");
 const AppError = require("../misc/AppError");
 
 class groupService {
@@ -34,30 +35,26 @@ class groupService {
     return { group, tags, searches };
   }
 
-  async getAllGroups(orderBy) {
-    if (orderBy === "oldest") return await this.groupModel.getOldestGroups();
-    if (orderBy === "popularity") {
-      const allGroups = await this.groupModel.getOldestGroups();
-      const groupIds = allGroups.map((item) => {
-        return item.group_id;
+  async getGroups(orderBy, condition) {
+    const cond = Object.entries(condition).reduce((map, [key, value]) => {
+      if (value !== undefined) {
+        map[key] = value;
+      }
+      return map;
+    }, {});
+    const groups = await this.groupModel.getGroupByCondition(cond);
+    const getAllGroups = await this.groupModel.getAllGroups(groups);
+    if (orderBy === "oldest") {
+      return getAllGroups;
+    } else if (orderBy === "popularity") {
+      return getAllGroups.sort((a, b) => {
+        return b.like - a.like;
       });
-      const groupAndLikes = await Promise.all(
-        groupIds.map(async (item) => {
-          const likes = await this.likeModel.getGroupLike(item);
-          const tags = await this.groupModel.getTags(item);
-          return { group_id: item, likes: likes.length, tags };
-        })
-      );
-      groupAndLikes.sort((a, b) => {
-        return b.likes - a.likes;
-      });
-      return groupAndLikes;
+    } else if (orderBy === "random") {
+      return getAllGroups.sort(() => Math.random() - 0.5);
+    } else {
+      return getAllGroups.sort((a, b) => b.createdAt - a.createdAt);
     }
-    if (orderBy === "random") {
-      const groups = await this.groupModel.getLatestGroups();
-      return groups.sort(() => Math.random() - 0.5);
-    }
-    return await this.groupModel.getLatestGroups();
   }
 
   async postPost({ user_id, group_id, title, content }) {
@@ -186,10 +183,6 @@ class groupService {
   }
 
   async postLike({ user_id, group_id, post_id }) {
-    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
-    if (!userTogroup) {
-      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
-    }
     return await this.likeModel.postLike({ user_id, post_id });
   }
 
