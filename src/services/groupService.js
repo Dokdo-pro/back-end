@@ -234,6 +234,17 @@ class groupService {
     const putSearch = await this.groupModel.updateSearch({ group_id, place, location, day, genre, age });
     return { putGroup, putTag, putSearch };
   }
+
+  async putProfile({ user_id, group_id, profilePic }) {
+    if (user_id) {
+      const group = await this.groupModel.findById(group_id);
+      const leader = group.leader;
+      if (leader !== user_id) {
+        throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
+      }
+    }
+    return await this.groupModel.updateProfile({ group_id, profilePic });
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel);

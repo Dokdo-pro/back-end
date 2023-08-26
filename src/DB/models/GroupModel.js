@@ -74,6 +74,10 @@ class GroupModel {
     const groups = await GroupSearch.find(condition);
     return groups.map((item) => item.group_id);
   }
+
+  async updateProfile({ group_id, profilePic }) {
+    return await Group.findOneAndUpdate({ group_id }, { $set: { profile: profilePic } }, { new: true });
+  }
 }
 
 module.exports = new GroupModel();
