@@ -31,8 +31,8 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
     const user_id = req.user_id;
-    const { name, profile, maxMember, tags } = req.body;
-    const putGroup = await groupService.putGroup({ group_id, name, profile, maxMember, tags, user_id });
+    const { name, tags, introduction, place, location, day, genre, age } = req.body;
+    const putGroup = await groupService.putGroup({ group_id, user_id, name, tags, introduction, place, location, day, genre, age });
     res.json(buildResponse(putGroup));
   })
 );
