@@ -19,10 +19,6 @@ const GroupSchema = new Schema(
       type: String,
       default: "",
     },
-    maxMember: {
-      type: Number,
-      default: 10,
-    },
     meeting: {
       type: Number,
       default: 0,
@@ -30,6 +26,18 @@ const GroupSchema = new Schema(
     leader: {
       type: Number,
       required: true,
+    },
+    introduction: {
+      type: String,
+      defualt: "",
+    },
+    place: {
+      type: String,
+      defualt: "",
+    },
+    maxMember: {
+      type: Number,
+      default: 10,
     },
   },
   {

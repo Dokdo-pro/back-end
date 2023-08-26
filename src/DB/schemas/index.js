@@ -12,7 +12,7 @@ const postlikeSchema = require("./postlikeSchema");
 const grouplikeSchema = require("./grouplikeSchema");
 const userTopostSchema = require("./userTopostSchema");
 const ReplySchema = require("./ReplySchema");
-
+const groupSearchSchema = require("./groupSearchSchema");
 module.exports = {
   albumsSchema,
   CommentSchema,
@@ -28,4 +28,5 @@ module.exports = {
   grouplikeSchema,
   userTopostSchema,
   ReplySchema,
+  groupSearchSchema,
 };
