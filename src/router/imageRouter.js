@@ -9,4 +9,8 @@ router.get("/profile/:src", (req, res, next) => {
   res.sendFile(path.join(__dirname, "../../uploads/profiles/", src));
 });
 
+router.get("/post/:src", (req, res, next) => {
+  const src = req.params.src;
+  res.sendFile(path.join(__dirname, "../../uploads/posts/", src));
+});
 module.exports = router;

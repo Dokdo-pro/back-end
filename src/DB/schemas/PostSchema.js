@@ -11,6 +11,10 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
+    images: {
+      type: [String],
+      default: [],
+    },
     post_id: {
       type: Number,
       unique: true,
