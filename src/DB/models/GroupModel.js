@@ -1,23 +1,25 @@
 const { model } = require("mongoose");
-const { GroupSchema, tagsSchema } = require("../schemas");
+const { GroupSchema, tagsSchema, groupSearchSchema } = require("../schemas");
 
 const Group = model("groups", GroupSchema);
 const Tag = model("tags", tagsSchema);
+const GroupSearch = model("groupsearchs", groupSearchSchema);
 
 class GroupModel {
   async findByName(name) {
     return await Group.findOne({ name });
   }
 
-  async create({ user_id, name, profile, maxMember, tag, duration }) {
-    const group = await Group.create({ name, profile, maxMember, duration, leader: user_id });
+  async create({ user_id, name, introduction, tag, place, location, age, genre, day }) {
+    const group = await Group.create({ name, introduction, place, leader: user_id });
     const group_id = group.group_id;
     const tags = await Promise.all(
       tag.map(async (item) => {
         return await Tag.create({ group_id, tag: item });
       })
     );
-    return { group, tags };
+    const searches = await GroupSearch.create({ group_id, location, age, genre, day });
+    return { group, tags, searches };
   }
 
   async findById(group_id) {

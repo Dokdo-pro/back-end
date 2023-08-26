@@ -13,12 +13,12 @@ class groupService {
     this.likeModel = likeModel;
   }
 
-  async postGroup({ user_id, name, profile, maxMember, tag, duration }) {
+  async postGroup({ user_id, name, introduction, tag, place, location, age, genre, day }) {
     const group = await this.groupModel.findByName(name);
     if (group) {
       throw new AppError("Bad Request", 400, "이미 존재하는 모임명입니다.");
     }
-    const createGroup = await this.groupModel.create({ user_id, name, profile, maxMember, tag, duration });
+    const createGroup = await this.groupModel.create({ user_id, name, introduction, tag, place, location, age, genre, day });
     const group_id = createGroup.group.group_id;
     const joinGroup = await this.groupTouserModel.joinGroup({ user_id, group_id });
     return { createGroup, joinGroup };
