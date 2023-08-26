@@ -50,8 +50,9 @@ router.delete(
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const { orderBy } = req.query;
-    const groupsInfo = await groupService.getAllGroups(orderBy);
+    const { orderBy, location, day, genre, age } = req.query;
+    const condition = { location, day, genre, age };
+    const groupsInfo = await groupService.getGroups(orderBy, condition);
     res.json(buildResponse(groupsInfo));
   })
 );

@@ -1,9 +1,10 @@
 const { model } = require("mongoose");
-const { GroupSchema, tagsSchema, groupSearchSchema } = require("../schemas");
+const { GroupSchema, tagsSchema, groupSearchSchema, grouplikeSchema } = require("../schemas");
 
 const Group = model("groups", GroupSchema);
 const Tag = model("tags", tagsSchema);
 const GroupSearch = model("groupsearchs", groupSearchSchema);
+const Like = model("grouplikes", grouplikeSchema);
 
 class GroupModel {
   async findByName(name) {
@@ -31,24 +32,15 @@ class GroupModel {
     return tags.map((item) => item.tag);
   }
 
-  async getOldestGroups() {
-    const groups = await Group.find();
+  async getAllGroups(groups) {
     return await Promise.all(
       groups.map(async (item) => {
-        let tags = await Tag.find({ group_id: item.group_id });
-        tags = tags.map((item) => item.tag);
-        return { name: item.name, isRecruit: item.isRecruit, profile: item.profile, maxMember: item.maxMember, leadar: item.leader, createdAt: item.createdAt, group_id: item.group_id, tags };
-      })
-    );
-  }
-
-  async getLatestGroups() {
-    const groups = await Group.find().sort({ createdAt: -1 });
-    return await Promise.all(
-      groups.map(async (item) => {
-        let tags = await Tag.find({ group_id: item.group_id });
-        tags = tags.map((item) => item.tag);
-        return { name: item.name, isRecruit: item.isRecruit, profile: item.profile, maxMember: item.maxMember, leadar: item.leader, createdAt: item.createdAt, group_id: item.group_id, tags };
+        const group = await Group.findOne({ group_id: item });
+        const tags = await Tag.find({ group_id: item });
+        const cleantags = tags.map((item) => item.tag);
+        const search = await GroupSearch.findOne({ group_id: item });
+        const likes = await Like.find({ group_id: item });
+        return { group_id: item, name: group.name, isRecruit: group.isRecruit, profile: group.profile, leader: group.leader, introduction: group.introduction, place: group.place, createdAt: group.createdAt, tags: cleantags, search, like: likes.length };
       })
     );
   }
@@ -76,6 +68,11 @@ class GroupModel {
 
   async updateSearch({ group_id, place, location, day, genre, age }) {
     return await GroupSearch.findOneAndUpdate({ group_id }, { $set: { place, location, day, genre, age } }, { new: true });
+  }
+
+  async getGroupByCondition(condition) {
+    const groups = await GroupSearch.find(condition);
+    return groups.map((item) => item.group_id);
   }
 }
 
