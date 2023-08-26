@@ -10,8 +10,8 @@ router.post(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const { name, profile, maxMember, tag, duration } = req.body;
-    const postGroup = await groupService.postGroup({ user_id, name, profile, maxMember, tag, duration });
+    const { name, introduction, tag, place, location, age, genre, day } = req.body;
+    const postGroup = await groupService.postGroup({ user_id, name, introduction, tag, place, location, age, genre, day });
     res.json(buildResponse(postGroup));
   })
 );
