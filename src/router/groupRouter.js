@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { groupService } = require("../services");
 const { asyncHandler, isAuthenticated } = require("../middlewares");
 const { buildResponse } = require("../misc/utils");
-const { uploadProfile } = require("../misc/multer");
+const { uploadProfile, uploadPost } = require("../misc/multer");
 
 const router = Router();
 
@@ -72,14 +72,26 @@ router.get(
   })
 );
 
+//사진 업로드
+router.post(
+  "/images",
+  isAuthenticated,
+  uploadPost.array("img", 3),
+  asyncHandler(async (req, res, next) => {
+    const files = req.files;
+    const filenames = files.map((item) => item.filename);
+    res.json(buildResponse(filenames));
+  })
+);
+
 router.post(
   "/:group_id/posts",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const group_id = req.params.group_id;
-    const { title, content } = req.body;
-    const postPost = await groupService.postPost({ user_id, group_id, title, content });
+    const { title, content, images } = req.body;
+    const postPost = await groupService.postPost({ user_id, group_id, title, content, images });
     res.json(buildResponse(postPost));
   })
 );
