@@ -44,8 +44,8 @@ class groupService {
     }, {});
     const groups = await this.groupModel.getGroupByCondition(cond);
     const getAllGroups = await this.groupModel.getAllGroups(groups);
-    if (orderBy === "latest") {
-      return getAllGroups.sort((a, b) => b.createdAt - a.createdAt);
+    if (orderBy === "oldest") {
+      return getAllGroups;
     } else if (orderBy === "popularity") {
       return getAllGroups.sort((a, b) => {
         return b.like - a.like;
@@ -53,7 +53,7 @@ class groupService {
     } else if (orderBy === "random") {
       return getAllGroups.sort(() => Math.random() - 0.5);
     } else {
-      return getAllGroups;
+      return getAllGroups.sort((a, b) => b.createdAt - a.createdAt);
     }
   }
 
