@@ -245,6 +245,11 @@ class groupService {
     const putSearch = await this.groupModel.updateSearch({ group_id, place, location, day, genre, age });
     return { putGroup, putTag, putSearch };
   }
+
+  async getAllGroups() {
+    const groups = await this.groupModel.getGroupByCondition();
+    return await this.groupModel.getAllGroups(groups);
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel);
