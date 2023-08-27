@@ -49,8 +49,7 @@ class GroupModel {
         const search = await GroupSearch.findOne({ group_id: item });
         const likes = await Like.find({ group_id: item });
         const mem = await GroupToUser.find({ group_id: group_id });
-
-        return { group_id: item, name: group.name, isRecruit: group.isRecruit, profile: group.profile, leader: group.leader, introduction: group.introduction, place: group.place, createdAt: group.createdAt, tags: cleantags, search, like: likes.length };
+        return { group_id: item, name: group.name, isRecruit: group.isRecruit, profile: group.profile, leader: group.leader, introduction: group.introduction, place: group.place, createdAt: group.createdAt, tags: cleantags, search, like: likes.length, mem };
       })
     );
   }
