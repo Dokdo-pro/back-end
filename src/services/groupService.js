@@ -70,11 +70,7 @@ class groupService {
     return await this.postToboardModel.findPostsByGroupId(group_id);
   }
 
-  async getPost({ user_id, group_id, post_id }) {
-    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
-    if (!userTogroup) {
-      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
-    }
+  async getPost({ group_id, post_id }) {
     return await this.postModel.findPostByPostId(post_id);
   }
 
@@ -116,10 +112,6 @@ class groupService {
   }
 
   async getComments({ user_id, group_id, post_id }) {
-    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
-    if (!userTogroup) {
-      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
-    }
     const comments = await this.commentTopostModel.findCommentsByPostId(post_id);
     return await Promise.all(
       comments.map((item) => {

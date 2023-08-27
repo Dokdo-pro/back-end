@@ -107,12 +107,10 @@ router.get(
 
 router.get(
   "/:group_id/posts/:post_id",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
     const group_id = req.params.group_id;
     const post_id = req.params.post_id;
-    const getPost = await groupService.getPost({ user_id, group_id, post_id });
+    const getPost = await groupService.getPost({ group_id, post_id });
     res.json(buildResponse(getPost));
   })
 );
@@ -154,11 +152,9 @@ router.post(
 
 router.get(
   "/:group_id/posts/:post_id/comments",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const getComments = await groupService.getComments({ user_id, group_id, post_id });
+    const getComments = await groupService.getComments({ group_id, post_id });
     res.json(buildResponse(getComments));
   })
 );
