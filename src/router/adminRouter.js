@@ -85,4 +85,15 @@ router.put(
     res.json(buildResponse(putGroup));
   })
 );
+
+router.put(
+  "/groups/:group_id",
+  asyncHandler(async (req, res, next) => {
+    const group_id = req.params.group_id;
+    const { name, tags, introduction, place, location, day, genre, age } = req.body;
+    const putGroup = await groupService.adminPutGroup({ group_id, name, tags, introduction, place, location, day, genre, age });
+    res.json(buildResponse(putGroup));
+  })
+);
+
 module.exports = router;

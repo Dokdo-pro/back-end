@@ -243,6 +243,13 @@ class groupService {
     }
     return await this.groupModel.updateProfile({ group_id, profilePic });
   }
+
+  async adminPutGroup({ group_id, name, tags, introduction, place, location, day, genre, age }) {
+    const putGroup = await this.groupModel.update({ group_id, name, introduction });
+    const putTag = await this.groupModel.updateTags({ group_id, tags });
+    const putSearch = await this.groupModel.updateSearch({ group_id, place, location, day, genre, age });
+    return { putGroup, putTag, putSearch };
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel);
