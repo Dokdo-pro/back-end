@@ -98,23 +98,19 @@ router.post(
 
 router.get(
   "/:group_id/posts",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
     const group_id = req.params.group_id;
-    const getPosts = await groupService.getPosts({ user_id, group_id });
+    const getPosts = await groupService.getPosts(group_id);
     res.json(buildResponse(getPosts));
   })
 );
 
 router.get(
   "/:group_id/posts/:post_id",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
     const group_id = req.params.group_id;
     const post_id = req.params.post_id;
-    const getPost = await groupService.getPost({ user_id, group_id, post_id });
+    const getPost = await groupService.getPost({ group_id, post_id });
     res.json(buildResponse(getPost));
   })
 );
@@ -156,11 +152,9 @@ router.post(
 
 router.get(
   "/:group_id/posts/:post_id/comments",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const getComments = await groupService.getComments({ user_id, group_id, post_id });
+    const getComments = await groupService.getComments({ group_id, post_id });
     res.json(buildResponse(getComments));
   })
 );
@@ -190,11 +184,9 @@ router.post(
 
 router.get(
   "/:group_id/posts/:post_id/comments/:comment_id/reply",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
     const { group_id, comment_id } = req.params;
-    const getReplies = await groupService.getReplies({ user_id, group_id, comment_id });
+    const getReplies = await groupService.getReplies({ group_id, comment_id });
     res.json(buildResponse(getReplies));
   })
 );
