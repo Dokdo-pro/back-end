@@ -134,6 +134,10 @@ class userService {
   async putProfile({ user_id, profilePic }) {
     return await this.userModel.updateProfile({ user_id, profilePic });
   }
+
+  async getUserInfo(user_id) {
+    return await this.userModel.getUserInfo(user_id);
+  }
 }
 
 module.exports = new userService(userModel, groupTouserModel, groupModel, postToboardModel);

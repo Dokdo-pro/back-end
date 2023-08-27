@@ -40,6 +40,10 @@ class UserModel {
     const user = await User.findOneAndUpdate({ user_id }, { $set: { profilePic } }, { new: true });
     return user.profilePic;
   }
+  async getUserInfo(user_id) {
+    const user = await User.findOne({ user_id });
+    return { name: user.name, profilePic: user.profilePic };
+  }
 }
 
 module.exports = new UserModel();
