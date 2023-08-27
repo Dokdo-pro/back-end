@@ -1,10 +1,11 @@
 const { model } = require("mongoose");
-const { GroupSchema, tagsSchema, groupSearchSchema, grouplikeSchema } = require("../schemas");
+const { GroupSchema, tagsSchema, groupSearchSchema, grouplikeSchema, groupTouserSchema } = require("../schemas");
 
 const Group = model("groups", GroupSchema);
 const Tag = model("tags", tagsSchema);
 const GroupSearch = model("groupsearchs", groupSearchSchema);
 const Like = model("grouplikes", grouplikeSchema);
+const GroupToUser = model("groupTousers", groupTouserSchema);
 
 class GroupModel {
   async findByName(name) {
@@ -29,7 +30,8 @@ class GroupModel {
     const cleantags = tags.map((item) => item.tag);
     const search = await GroupSearch.findOne({ group_id });
     const likes = await Like.find({ group_id });
-    return { group_id: group.group_id, name: group.name, isRecruit: group.isRecruit, profile: group.profile, leader: group.leader, introduction: group.introduction, place: group.place, createdAt: group.createdAt, tags: cleantags, search, like: likes.length };
+    const mem = await GroupToUser.find({ group_id: group_id });
+    return { group_id: group.group_id, name: group.name, isRecruit: group.isRecruit, profile: group.profile, leader: group.leader, introduction: group.introduction, place: group.place, createdAt: group.createdAt, tags: cleantags, search, like: likes.length, mem };
   }
 
   async getTags(group_id) {
