@@ -74,7 +74,7 @@ class groupService {
     return await this.postModel.findPostByPostId(post_id);
   }
 
-  async putPost({ user_id, group_id, post_id, title, content }) {
+  async putPost({ user_id, group_id, post_id, title, content, images }) {
     const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
     if (!userTogroup) {
       throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
@@ -83,7 +83,7 @@ class groupService {
     if (user_id !== post.user_id) {
       throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
     }
-    return await this.postModel.update({ post_id, title, content });
+    return await this.postModel.update({ post_id, title, content, images });
   }
 
   async deletePost({ user_id, group_id, post_id }) {
@@ -256,6 +256,33 @@ class groupService {
 
   async getAlbums(group_id) {
     return await this.albumToboardModel.findAlbumsByGroupId(group_id);
+  }
+
+  async putAlbum({ user_id, group_id, post_id, title, content, images }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
+    const post = await this.albumToboardModel.findAlbumByPostId(post_id);
+    console.log(post);
+    if (user_id !== post.user_id) {
+      throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
+    }
+    return await this.postModel.update({ post_id, title, content, images, images });
+  }
+
+  async deleteAlbum({ user_id, group_id, post_id }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
+    const post = await this.albumToboardModel.findAlbumByPostId(post_id);
+    if (user_id !== post.user_id) {
+      throw new AppError("Bad Request", 400, "삭제 권한이 없습니다.");
+    }
+    const deleteAlbum = await this.postModel.delete(post_id);
+    const deleteAlbumToBoard = await this.albumToboardModel.delete(post_id);
+    return { deleteAlbum, deleteAlbumToBoard };
   }
 }
 
