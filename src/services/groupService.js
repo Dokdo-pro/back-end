@@ -1,9 +1,8 @@
-const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel } = require("../DB/models");
-const { get } = require("../DB/schemas/albumsSchema");
+const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
-  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel) {
+  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel) {
     this.groupModel = groupModel;
     this.groupTouserModel = groupTouserModel;
     this.postModel = postModel;
@@ -12,6 +11,7 @@ class groupService {
     this.commentTopostModel = commentTopostModel;
     this.replyModel = replyModel;
     this.likeModel = likeModel;
+    this.albumToboardModel = albumToboardModel;
   }
 
   async postGroup({ user_id, name, introduction, tag, place, location, age, genre, day }) {
@@ -242,6 +242,17 @@ class groupService {
     const groups = await this.groupModel.getGroupByCondition();
     return await this.groupModel.getAllGroups(groups);
   }
+
+  async postAlbum({ user_id, group_id, title, content, images }) {
+    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
+    if (!userTogroup) {
+      throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
+    }
+    const createPost = await this.postModel.create({ group_id, title, content, images });
+    const post_id = createPost.post_id;
+    const postToboard = await this.albumToboardModel.create({ post_id, user_id, group_id });
+    return { createPost, postToboard };
+  }
 }
 
-module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel);
+module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel);

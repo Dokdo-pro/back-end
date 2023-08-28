@@ -217,7 +217,6 @@ router.put(
 
 router.get(
   "/:group_id/posts/:post_id/like",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
@@ -239,7 +238,6 @@ router.put(
 
 router.get(
   "/:group_id/like",
-  isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const { group_id } = req.params;
     const getGroupLike = await groupService.getGroupLike(group_id);
@@ -247,4 +245,15 @@ router.get(
   })
 );
 
+router.post(
+  "/:group_id/albums",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const group_id = req.params.group_id;
+    const { title, content, images } = req.body;
+    const postAlbum = await groupService.postAlbum({ user_id, group_id, title, content, images });
+    res.json(buildResponse(postAlbum));
+  })
+);
 module.exports = router;
