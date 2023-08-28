@@ -4,7 +4,7 @@ const AppError = require("../../misc/AppError");
 
 const AlbumToBoard = model("albumToboards", albumToboardSchema);
 
-class PostToBoardModel {
+class AlbumToBoardModel {
   async create({ post_id, user_id, group_id }) {
     return await AlbumToBoard.create({ post_id: post_id, group_id: group_id, user_id: user_id });
   }
@@ -22,4 +22,4 @@ class PostToBoardModel {
   }
 }
 
-module.exports = new PostToBoardModel();
+module.exports = new AlbumToBoardModel();

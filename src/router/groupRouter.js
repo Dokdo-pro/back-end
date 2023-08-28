@@ -256,4 +256,14 @@ router.post(
     res.json(buildResponse(postAlbum));
   })
 );
+
+router.get(
+  "/:group_id/albums",
+  asyncHandler(async (req, res, next) => {
+    const group_id = req.params.group_id;
+    const getAlbums = await groupService.getAlbums(group_id);
+    res.json(buildResponse(getAlbums));
+  })
+);
+
 module.exports = router;
