@@ -253,6 +253,10 @@ class groupService {
     const postToboard = await this.albumToboardModel.create({ post_id, user_id, group_id });
     return { createPost, postToboard };
   }
+
+  async getAlbums(group_id) {
+    return await this.albumToboardModel.findAlbumsByGroupId(group_id);
+  }
 }
 
 module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel);
