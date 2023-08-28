@@ -121,8 +121,8 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const { title, content } = req.body;
-    const putPost = await groupService.putPost({ user_id, group_id, post_id, title, content });
+    const { title, content, images } = req.body;
+    const putPost = await groupService.putPost({ user_id, group_id, post_id, title, content, images });
     res.json(buildResponse(putPost));
   })
 );
@@ -263,6 +263,29 @@ router.get(
     const group_id = req.params.group_id;
     const getAlbums = await groupService.getAlbums(group_id);
     res.json(buildResponse(getAlbums));
+  })
+);
+
+router.put(
+  "/:group_id/albums/:post_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const { title, content, images } = req.body;
+    const putAlbum = await groupService.putAlbum({ user_id, group_id, post_id, title, content, images });
+    res.json(buildResponse(putAlbum));
+  })
+);
+
+router.delete(
+  "/:group_id/albums/:post_id",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { group_id, post_id } = req.params;
+    const deleteAlbum = await groupService.deleteAlbum({ user_id, group_id, post_id });
+    res.json(buildResponse(deleteAlbum));
   })
 );
 
