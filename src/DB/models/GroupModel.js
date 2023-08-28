@@ -25,7 +25,7 @@ class GroupModel {
   }
 
   async findById(group_id) {
-    const group = await Group.findOne({ group_id });
+    const group = await Group.findOne({ group_id: group_id });
     const tags = await Tag.find({ group_id });
     const cleantags = tags.map((item) => item.tag);
     const search = await GroupSearch.findOne({ group_id });
@@ -54,7 +54,10 @@ class GroupModel {
   }
 
   async delete(group_id) {
-    return await Group.deleteOne({ group_id: group_id });
+    const deleteGroup = await Group.deleteOne({ group_id: group_id });
+    const deleteTag = await Tag.deleteMany({ group_id: group_id });
+    const deleteSearch = await GroupSearch.deleteOne({ group_id: group_id });
+    return { deleteGroup, deleteTag, deleteSearch };
   }
 
   async update({ group_id, name, introduction }) {
