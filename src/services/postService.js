@@ -1,21 +1,44 @@
-const { postModel, groupTouserModel, postToboardModel } = require("../db/models");
+const { userModel, postModel, postToboardModel, albumToboardModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class postService {
-  constructor(postModel, groupTouserModel, postToboardModel) {
+  constructor(userModel, postModel, postToboardModel, albumToboardModel) {
     this.postModel = postModel;
-    this.groupTouserModel = groupTouserModel;
     this.postToboardModel = postToboardModel;
+    this.albumToboardModel = albumToboardModel;
+    this.userModel = userModel;
   }
 
-  async postPost({ user_id, group_id, title, content }) {
-    const userTogroup = await this.groupTouserModel.findUserAndGroupById({ user_id, group_id });
-    if (!userTogroup) {
-      throw new AppError("Bad Request", 400, "모임 가입 후 이용하실 수 있습니다.");
-    }
-    const post_id = await this.postModel.create({ user_id, group_id, title, content });
-    return await this.postToboardModel.create({ post_id, user_id, group_id });
+  async getAllPosts() {
+    const posts = await this.postToboardModel.getAllPosts();
+    return Promise.all(
+      posts.map(async (item) => {
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { post: item, user: user };
+      })
+    );
+  }
+
+  async putPost({ post_id, title, content }) {
+    const post = await this.postModel.update({ post_id, title, content });
+    return { title: post.title, content: post.content, createdAt: post.createdAt, updatedAt: post.updatedAt, post_id: post.post_id };
+  }
+
+  async deletePost(post_id) {
+    const deletePost = await this.postModel.delete(post_id);
+    const deletePostFromGroup = await this.postToboardModel.delete(post_id);
+    return { deletePost: deletePost, deletePostFromGroup: deletePostFromGroup };
+  }
+
+  async getAllAlbums() {
+    const albums = await this.albumToboardModel.getAllAlbums();
+    return Promise.all(
+      albums.map(async (item) => {
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { album: item, user: user };
+      })
+    );
   }
 }
 
-module.exports = new postService(postModel, groupTouserModel, postToboardModel);
+module.exports = new postService(userModel, postModel, postToboardModel, albumToboardModel);

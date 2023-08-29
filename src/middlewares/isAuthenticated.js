@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     }
     jwt.verify(Token, process.env.JWT_SECRET_KEY, (err, decoded) => {
       req.user_id = decoded.user_id;
+      req.role = decoded.role;
     });
     next();
   } catch (error) {
