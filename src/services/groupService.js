@@ -1,8 +1,8 @@
-const { groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel } = require("../DB/models");
+const { userModel, groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class groupService {
-  constructor(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel) {
+  constructor(userModel, groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel) {
     this.groupModel = groupModel;
     this.groupTouserModel = groupTouserModel;
     this.postModel = postModel;
@@ -12,6 +12,7 @@ class groupService {
     this.replyModel = replyModel;
     this.likeModel = likeModel;
     this.albumToboardModel = albumToboardModel;
+    this.userModel = userModel;
   }
 
   async postGroup({ user_id, name, introduction, tag, place, location, age, genre, day }) {
@@ -67,7 +68,14 @@ class groupService {
   }
 
   async getPosts(group_id) {
-    return await this.postToboardModel.findPostsByGroupId(group_id);
+    const posts = await this.postToboardModel.findPostsByGroupId(group_id);
+    return Promise.all(
+      posts.map(async (item) => {
+        const post = await this.postModel.findPostByPostId(item.post_id);
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { post, user };
+      })
+    );
   }
 
   async getPost({ group_id, post_id }) {
@@ -255,7 +263,14 @@ class groupService {
   }
 
   async getAlbums(group_id) {
-    return await this.albumToboardModel.findAlbumsByGroupId(group_id);
+    const groups = await this.albumToboardModel.findAlbumsByGroupId(group_id);
+    return Promise.all(
+      groups.map(async (item) => {
+        const post = await this.postModel.findPostByPostId(item.post_id);
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { post, user };
+      })
+    );
   }
 
   async putAlbum({ user_id, group_id, post_id, title, content, images }) {
@@ -286,4 +301,4 @@ class groupService {
   }
 }
 
-module.exports = new groupService(groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel);
+module.exports = new groupService(userModel, groupModel, groupTouserModel, postModel, postToboardModel, commentModel, commentTopostModel, replyModel, likeModel, albumToboardModel);
