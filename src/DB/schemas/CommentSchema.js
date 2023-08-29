@@ -7,17 +7,13 @@ const CommentSchema = new Schema(
       type: Number,
       unique: true,
     },
-    author: {
-      type: Number,
-      required: true,
-    },
     text: {
       type: String,
       required: true,
     },
-    post: {
-      type: Number,
-      required: true,
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: { currentTime: () => new Date(new Date().getTime() + 1000 * 60 * 60 * 9) } }

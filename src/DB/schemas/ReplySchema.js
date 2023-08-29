@@ -1,12 +1,16 @@
 const { Schema } = require("mongoose");
 
-const albumsSchema = new Schema(
+const ReplySchema = new Schema(
   {
-    group_id: {
+    comment_id: {
       type: Number,
       required: true,
     },
-    album_id: {
+    parentComment_id: {
+      type: Number,
+      required: true,
+    },
+    user_id: {
       type: Number,
       required: true,
     },
@@ -16,4 +20,4 @@ const albumsSchema = new Schema(
   }
 );
 
-module.exports = albumsSchema;
+module.exports = ReplySchema;

@@ -1,14 +1,18 @@
 const { Schema } = require("mongoose");
 
-const tagsSchema = new Schema(
+const albumToboardSchema = new Schema(
   {
     group_id: {
       type: Number,
       required: true,
     },
-    tag: {
-      type: String,
-      default: "",
+    post_id: {
+      type: Number,
+      required: true,
+    },
+    user_id: {
+      type: Number,
+      required: true,
     },
   },
   {
@@ -16,4 +20,4 @@ const tagsSchema = new Schema(
   }
 );
 
-module.exports = tagsSchema;
+module.exports = albumToboardSchema;

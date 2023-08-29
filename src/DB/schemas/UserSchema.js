@@ -6,23 +6,15 @@ const UserSchema = new Schema(
       type: Number,
       unique: true,
     },
-    id: {
-      type: String,
-      required: true,
-    },
     password: {
       type: String,
       required: true,
     },
     name: {
       type: String,
-      required: true,
+      defalut: "",
     },
     email: {
-      type: String,
-      required: true,
-    },
-    address: {
       type: String,
       required: true,
     },
@@ -31,6 +23,10 @@ const UserSchema = new Schema(
       default: true,
     },
     profilePic: {
+      type: String,
+      default: "",
+    },
+    introduction: {
       type: String,
       default: "",
     },

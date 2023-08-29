@@ -1,5 +1,6 @@
 const { model } = require("mongoose");
 const { groupTouserSchema } = require("../schemas");
+const AppError = require("../../misc/AppError");
 
 const GroupToUser = model("groupTousers", groupTouserSchema);
 
@@ -26,6 +27,14 @@ class groupTouserModel {
 
   async getGroupMember(group_id) {
     return await GroupToUser.find({ group_id: group_id });
+  }
+
+  async leaveAllGroup(user_id) {
+    return await GroupToUser.deleteMany({ user_id: user_id });
+  }
+
+  async deleteGroupToUser(group_id) {
+    return await GroupToUser.deleteMany({ group_id: group_id });
   }
 }
 
