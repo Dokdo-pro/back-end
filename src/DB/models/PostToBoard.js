@@ -1,8 +1,10 @@
 const { model } = require("mongoose");
-const { postToboardSchema } = require("../schemas");
+const { postToboardSchema, PostSchema } = require("../schemas");
 const AppError = require("../../misc/AppError");
+const { postService } = require("../../services");
 
 const PostToBoard = model("postToboards", postToboardSchema);
+const Post = model("posts", PostSchema);
 
 class PostToBoardModel {
   async create({ post_id, user_id, group_id }) {
@@ -22,6 +24,16 @@ class PostToBoardModel {
   }
   async getAllPosts() {
     return await PostToBoard.find();
+  }
+  async deleteAllPosts(user_id) {
+    const Posts = await PostToBoard.find({ user_id });
+    const deletePosts = Promise.all(
+      Posts.map(async (item) => {
+        return await Post.deleteOne({ post_id: item.post_id });
+      })
+    );
+    const deletePostsToBoard = await PostToBoard.deleteMany({ user_id });
+    return { deletePosts, deletePostsToBoard };
   }
 }
 
