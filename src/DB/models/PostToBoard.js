@@ -20,6 +20,9 @@ class PostToBoardModel {
   async delete(post_id) {
     return await PostToBoard.deleteOne({ post_id: post_id });
   }
+  async getAllPosts() {
+    return await PostToBoard.find();
+  }
 }
 
 module.exports = new PostToBoardModel();

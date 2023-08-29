@@ -41,6 +41,14 @@ router.get(
   })
 );
 
+router.get(
+  "/albums",
+  asyncHandler(async (req, res, next) => {
+    const albums = await postService.getAllAlbums();
+    res.json(buildResponse(albums));
+  })
+);
+
 router.put(
   "/posts/:post_id",
   asyncHandler(async (req, res, next) => {

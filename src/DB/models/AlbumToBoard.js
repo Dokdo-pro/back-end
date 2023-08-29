@@ -20,6 +20,9 @@ class AlbumToBoardModel {
   async delete(post_id) {
     return await AlbumToBoard.deleteOne({ post_id: post_id });
   }
+  async getAllAlbums() {
+    return await AlbumToBoard.find();
+  }
 }
 
 module.exports = new AlbumToBoardModel();
