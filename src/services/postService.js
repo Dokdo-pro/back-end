@@ -1,17 +1,15 @@
-const { postModel, postToboardModel } = require("../DB/models");
+const { postModel, postToboardModel, albumToboardModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class postService {
-  constructor(postModel, postToboardModel) {
+  constructor(postModel, postToboardModel, albumToboardModel) {
     this.postModel = postModel;
     this.postToboardModel = postToboardModel;
+    this.albumToboardModel = albumToboardModel;
   }
 
   async getAllPosts() {
-    const posts = await this.postModel.getAllPosts();
-    return posts.map((item) => {
-      return { title: item.title, content: item.content, createdAt: item.createdAt, updatedAt: item.updatedAt, post_id: item.post_id };
-    });
+    return await this.postToboardModel.getAllPosts();
   }
 
   async putPost({ post_id, title, content }) {
@@ -24,6 +22,10 @@ class postService {
     const deletePostFromGroup = await this.postToboardModel.delete(post_id);
     return { deletePost: deletePost, deletePostFromGroup: deletePostFromGroup };
   }
+
+  async getAllAlbums() {
+    return await this.albumToboardModel.getAllAlbums();
+  }
 }
 
-module.exports = new postService(postModel, postToboardModel);
+module.exports = new postService(postModel, postToboardModel, albumToboardModel);
