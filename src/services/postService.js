@@ -1,15 +1,22 @@
-const { postModel, postToboardModel, albumToboardModel } = require("../DB/models");
+const { userModel, postModel, postToboardModel, albumToboardModel } = require("../DB/models");
 const AppError = require("../misc/AppError");
 
 class postService {
-  constructor(postModel, postToboardModel, albumToboardModel) {
+  constructor(userModel, postModel, postToboardModel, albumToboardModel) {
     this.postModel = postModel;
     this.postToboardModel = postToboardModel;
     this.albumToboardModel = albumToboardModel;
+    this.userModel = userModel;
   }
 
   async getAllPosts() {
-    return await this.postToboardModel.getAllPosts();
+    const posts = await this.postToboardModel.getAllPosts();
+    return Promise.all(
+      posts.map(async (item) => {
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { post: item, user: user };
+      })
+    );
   }
 
   async putPost({ post_id, title, content }) {
@@ -24,8 +31,14 @@ class postService {
   }
 
   async getAllAlbums() {
-    return await this.albumToboardModel.getAllAlbums();
+    const albums = await this.albumToboardModel.getAllAlbums();
+    return Promise.all(
+      albums.map(async (item) => {
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { album: item, user: user };
+      })
+    );
   }
 }
 
-module.exports = new postService(postModel, postToboardModel, albumToboardModel);
+module.exports = new postService(userModel, postModel, postToboardModel, albumToboardModel);
