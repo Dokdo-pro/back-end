@@ -80,7 +80,19 @@ class groupService {
   }
 
   async getPost({ group_id, post_id }) {
-    return await this.postModel.findPostByPostId(post_id);
+    const user_post = await this.postToboardModel.findPostByPostId(post_id);
+    const user_album = await this.albumToboardModel.findAlbumByPostId(post_id);
+    if (user_post) {
+      const user_id = user_post.user_id;
+      const post = await this.postModel.findPostByPostId(post_id);
+      const user = await this.userModel.getUserInfo(user_id);
+      return { post, user };
+    } else {
+      const user_id = user_album.user_id;
+      const post = await this.postModel.findPostByPostId(post_id);
+      const user = await this.userModel.getUserInfo(user_id);
+      return { post, user };
+    }
   }
 
   async putPost({ user_id, group_id, post_id, title, content, images }) {
