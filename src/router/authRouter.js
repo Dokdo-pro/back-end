@@ -134,7 +134,8 @@ router.get(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const groups = await groupService.getLikedGroup(user_id);
+    const { offset, limit } = req.query;
+    const groups = await groupService.getLikedGroup({ user_id, offset, limit });
     res.json(buildResponse(groups));
   })
 );
