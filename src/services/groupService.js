@@ -67,8 +67,8 @@ class groupService {
     return { createPost, postToboard };
   }
 
-  async getPosts(group_id) {
-    const posts = await this.postToboardModel.findPostsByGroupId(group_id);
+  async getPosts({ group_id, limit, offset }) {
+    const posts = await this.postToboardModel.findPostsByGroupId({ group_id, limit, offset });
     return Promise.all(
       posts.map(async (item) => {
         const post = await this.postModel.findPostByPostId(item.post_id);

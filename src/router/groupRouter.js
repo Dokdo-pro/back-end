@@ -100,7 +100,8 @@ router.get(
   "/:group_id/posts",
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
-    const getPosts = await groupService.getPosts(group_id);
+    const { offset, limit } = req.query;
+    const getPosts = await groupService.getPosts({ group_id, limit, offset });
     res.json(buildResponse(getPosts));
   })
 );
