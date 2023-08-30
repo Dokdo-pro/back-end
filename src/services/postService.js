@@ -9,8 +9,8 @@ class postService {
     this.userModel = userModel;
   }
 
-  async getAllPosts() {
-    const posts = await this.postToboardModel.getAllPosts();
+  async getAllPosts({ limit, offset }) {
+    const posts = await this.postToboardModel.getAllPosts({ limit, offset });
     return Promise.all(
       posts.map(async (item) => {
         const user = await this.userModel.getUserInfo(item.user_id);
@@ -30,8 +30,8 @@ class postService {
     return { deletePost: deletePost, deletePostFromGroup: deletePostFromGroup };
   }
 
-  async getAllAlbums() {
-    const albums = await this.albumToboardModel.getAllAlbums();
+  async getAllAlbums({ limit, offset }) {
+    const albums = await this.albumToboardModel.getAllAlbums({ limit, offset });
     return Promise.all(
       albums.map(async (item) => {
         const user = await this.userModel.getUserInfo(item.user_id);
