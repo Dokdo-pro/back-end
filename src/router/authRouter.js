@@ -69,8 +69,19 @@ router.put(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const { password, name, introduction } = req.body;
-    const editInfo = await userService.putUser({ user_id, password, name, introduction });
+    const { name, introduction } = req.body;
+    const editInfo = await userService.putUser({ user_id, name, introduction });
+    res.json(buildResponse(editInfo));
+  })
+);
+
+router.put(
+  "/me/password",
+  isAuthenticated,
+  asyncHandler(async (req, res, next) => {
+    const user_id = req.user_id;
+    const { password } = req.body;
+    const editInfo = await userService.putPassword({ user_id, password });
     res.json(buildResponse(editInfo));
   })
 );
