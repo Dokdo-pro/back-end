@@ -262,7 +262,8 @@ router.get(
   "/:group_id/albums",
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
-    const getAlbums = await groupService.getAlbums(group_id);
+    const { offset, limit } = req.query;
+    const getAlbums = await groupService.getAlbums({ group_id, limit, offset });
     res.json(buildResponse(getAlbums));
   })
 );
