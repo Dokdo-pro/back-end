@@ -155,7 +155,8 @@ router.get(
   "/:group_id/posts/:post_id/comments",
   asyncHandler(async (req, res, next) => {
     const { group_id, post_id } = req.params;
-    const getComments = await groupService.getComments({ group_id, post_id });
+    const { limit, offset } = req.query;
+    const getComments = await groupService.getComments({ group_id, post_id, limit, offset });
     res.json(buildResponse(getComments));
   })
 );
