@@ -92,7 +92,8 @@ router.get(
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const myPosts = await userService.getMyPosts(user_id);
+    const { offset, limit } = req.query;
+    const myPosts = await userService.getMyPosts({ user_id, offset, limit });
     res.json(buildResponse(myPosts));
   })
 );

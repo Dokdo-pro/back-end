@@ -13,8 +13,8 @@ class PostToBoardModel {
   async findPostsByGroupId(group_id) {
     return await PostToBoard.find({ group_id: group_id });
   }
-  async findPostsByUserId(user_id) {
-    return await PostToBoard.find({ user_id: user_id });
+  async findPostsByUserId({ user_id, offset, limit }) {
+    return await PostToBoard.find({ user_id: user_id }).limit(limit).skip(offset);
   }
   async findPostByPostId(post_id) {
     return await PostToBoard.findOne({ post_id: post_id });
