@@ -1,15 +1,16 @@
-const { userModel, groupTouserModel, groupModel, postToboardModel } = require("../DB/models");
+const { userModel, groupTouserModel, groupModel, postToboardModel, albumToboardModel } = require("../DB/models");
 const jwt = require("jsonwebtoken");
 const { hashPassword, randomName } = require("../misc/utils");
 const bcrypt = require("bcrypt");
 const AppError = require("../misc/AppError");
 
 class userService {
-  constructor(userModel, groupTouserModel, groupModel, postToboardModel) {
+  constructor(userModel, groupTouserModel, groupModel, postToboardModel, albumToboardModel) {
     this.userModel = userModel;
     this.groupTouserModel = groupTouserModel;
     this.groupModel = groupModel;
     this.postToboardModel = postToboardModel;
+    this.albumToboardModel = albumToboardModel;
   }
 
   async postUser(userInfo) {
@@ -105,7 +106,9 @@ class userService {
   }
 
   async getMyPosts({ user_id, offset, limit }) {
-    return await this.postToboardModel.findPostsByUserId({ user_id, offset, limit });
+    const posts = await this.postToboardModel.findPostsByUserId({ user_id, offset, limit });
+    const albums = await this.albumToboardModel.findAlbumsByUserId({ user_id, limit, offset });
+    return { posts, albums };
   }
 
   async getUserName(user_id) {
@@ -140,4 +143,4 @@ class userService {
   }
 }
 
-module.exports = new userService(userModel, groupTouserModel, groupModel, postToboardModel);
+module.exports = new userService(userModel, groupTouserModel, groupModel, postToboardModel, albumToboardModel);

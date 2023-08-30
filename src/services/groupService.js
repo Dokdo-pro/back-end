@@ -262,8 +262,8 @@ class groupService {
     return { createPost, postToboard };
   }
 
-  async getAlbums(group_id) {
-    const groups = await this.albumToboardModel.findAlbumsByGroupId(group_id);
+  async getAlbums({ group_id, limit, offset }) {
+    const groups = await this.albumToboardModel.findAlbumsByGroupId({ group_id, limit, offset });
     return Promise.all(
       groups.map(async (item) => {
         const post = await this.postModel.findPostByPostId(item.post_id);
