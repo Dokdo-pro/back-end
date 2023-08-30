@@ -104,8 +104,8 @@ class userService {
     return userLeaveGroup;
   }
 
-  async getMyPosts(user_id) {
-    return await this.postToboardModel.findPostsByUserId(user_id);
+  async getMyPosts({ user_id, offset, limit }) {
+    return await this.postToboardModel.findPostsByUserId({ user_id, offset, limit });
   }
 
   async getUserName(user_id) {
