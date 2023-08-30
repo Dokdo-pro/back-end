@@ -67,7 +67,8 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { orderBy, location, day, genre, age } = req.query;
     const condition = { location, day, genre, age };
-    const groupsInfo = await groupService.getGroups(orderBy, condition);
+    const { limit, offset } = req.query;
+    const groupsInfo = await groupService.getGroups({ orderBy, condition, limit, offset });
     res.json(buildResponse(groupsInfo));
   })
 );
@@ -156,7 +157,7 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { group_id, post_id } = req.params;
     const { limit, offset } = req.query;
-    const getComments = await groupService.getComments({ group_id, post_id, limit, offset });
+    const getComments = await groupService.getComments({ post_id, limit, offset });
     res.json(buildResponse(getComments));
   })
 );
