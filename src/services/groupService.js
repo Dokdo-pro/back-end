@@ -73,7 +73,7 @@ class groupService {
       posts.map(async (item) => {
         const post = await this.postModel.findPostByPostId(item.post_id);
         const user = await this.userModel.getUserInfo(item.user_id);
-        return { post, user };
+        return { post, user, user_id: item.user_id, group_id: item.group_id };
       })
     );
   }
@@ -268,7 +268,7 @@ class groupService {
       groups.map(async (item) => {
         const post = await this.postModel.findPostByPostId(item.post_id);
         const user = await this.userModel.getUserInfo(item.user_id);
-        return { post, user };
+        return { post, user, user_id: item.user_id, group_id: item.group_id };
       })
     );
   }
