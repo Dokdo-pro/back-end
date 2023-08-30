@@ -22,8 +22,8 @@ class PostToBoardModel {
   async delete(post_id) {
     return await PostToBoard.deleteOne({ post_id: post_id });
   }
-  async getAllPosts() {
-    return await PostToBoard.find();
+  async getAllPosts({ limit, offset }) {
+    return await PostToBoard.find().limit(limit).skip(offset);
   }
   async deleteAllPosts(user_id) {
     const Posts = await PostToBoard.find({ user_id });

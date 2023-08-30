@@ -90,6 +90,10 @@ class GroupModel {
     const group = await Group.findOneAndUpdate({ group_id }, { $set: { profile: profilePic } }, { new: true });
     return group.profile;
   }
+
+  async getAll({ limit, offset }) {
+    return await Group.find().limit(limit).skip(offset);
+  }
 }
 
 module.exports = new GroupModel();

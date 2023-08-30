@@ -20,8 +20,8 @@ class AlbumToBoardModel {
   async delete(post_id) {
     return await AlbumToBoard.deleteOne({ post_id: post_id });
   }
-  async getAllAlbums() {
-    return await AlbumToBoard.find();
+  async getAllAlbums({ limit, offset }) {
+    return await AlbumToBoard.find().limit(limit).skip(offset);
   }
 }
 

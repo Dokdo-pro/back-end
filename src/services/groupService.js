@@ -247,9 +247,8 @@ class groupService {
     return { putGroup, putTag, putSearch };
   }
 
-  async getAllGroups() {
-    const groups = await this.groupModel.getGroupByCondition();
-    return await this.groupModel.getAllGroups(groups);
+  async getAllGroups({ limit, offset }) {
+    return await this.groupModel.getAll({ limit, offset });
   }
 
   async postAlbum({ user_id, group_id, title, content, images }) {

@@ -8,7 +8,8 @@ const router = Router();
 router.get(
   "/users",
   asyncHandler(async (req, res, next) => {
-    const users = await userService.getAllUsers();
+    const { limit, offset } = req.query;
+    const users = await userService.getAllUsers({ limit, offset });
     res.json(buildResponse(users));
   })
 );
@@ -36,7 +37,8 @@ router.delete(
 router.get(
   "/posts",
   asyncHandler(async (req, res, next) => {
-    const posts = await postService.getAllPosts();
+    const { limit, offset } = req.query;
+    const posts = await postService.getAllPosts({ limit, offset });
     res.json(buildResponse(posts));
   })
 );
@@ -44,7 +46,8 @@ router.get(
 router.get(
   "/albums",
   asyncHandler(async (req, res, next) => {
-    const albums = await postService.getAllAlbums();
+    const { limit, offset } = req.query;
+    const albums = await postService.getAllAlbums({ limit, offset });
     res.json(buildResponse(albums));
   })
 );
@@ -70,7 +73,8 @@ router.delete(
 router.get(
   "/groups",
   asyncHandler(async (req, res, next) => {
-    const getAllGroups = await groupService.getAllGroups();
+    const { limit, offset } = req.query;
+    const getAllGroups = await groupService.getAllGroups({ limit, offset });
     res.json(buildResponse(getAllGroups));
   })
 );
