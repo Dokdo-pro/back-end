@@ -116,8 +116,8 @@ class userService {
     return user.name;
   }
 
-  async getAllUsers() {
-    const users = await this.userModel.getAllUsers();
+  async getAllUsers({ limit, offset }) {
+    const users = await this.userModel.getAllUsers({ limit, offset });
     return users.map((item) => {
       return { name: item.name, email: item.email, user_id: item.user_id };
     });

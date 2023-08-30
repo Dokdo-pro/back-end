@@ -27,8 +27,8 @@ class UserModel {
   async findByIdAndUpdateInfo({ user_id, hashedPW, name, introduction }) {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, introduction } }, { new: true });
   }
-  async getAllUsers() {
-    return await User.find({ role: "user" });
+  async getAllUsers({ limit, offset }) {
+    return await User.find({ role: "user" }).limit(limit).skip(offset);
   }
   async adminPutUser({ user_id, name, email, profilePic, introduction }) {
     return await User.findOneAndUpdate({ user_id: user_id }, { $set: { email, name, profilePic, introduction } }, { new: true });
