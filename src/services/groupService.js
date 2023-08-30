@@ -34,7 +34,7 @@ class groupService {
     return group;
   }
 
-  async getGroups(orderBy, condition) {
+  async getGroups({ orderBy, condition, limit, offset }) {
     const cond = Object.entries(condition).reduce((map, [key, value]) => {
       if (value !== undefined) {
         map[key] = value;
@@ -44,15 +44,16 @@ class groupService {
     const groups = await this.groupModel.getGroupByCondition(cond);
     const getAllGroups = await this.groupModel.getAllGroups(groups);
     if (orderBy === "oldest") {
-      return getAllGroups;
+      return getAllGroups.slice(offset, offset + limit);
     } else if (orderBy === "popularity") {
-      return getAllGroups.sort((a, b) => {
+      const g = getAllGroups.sort((a, b) => {
         return b.like - a.like;
       });
+      g.slice(offset, offset + limit);
     } else if (orderBy === "random") {
-      return getAllGroups.sort(() => Math.random() - 0.5);
+      return getAllGroups.sort(() => Math.random() - 0.5).slice(offset, offset + limit);
     } else {
-      return getAllGroups.sort((a, b) => b.createdAt - a.createdAt);
+      return getAllGroups.sort((a, b) => b.createdAt - a.createdAt).slice(offset, offset + limit);
     }
   }
 
