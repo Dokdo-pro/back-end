@@ -197,8 +197,8 @@ class groupService {
     return likes.length;
   }
 
-  async getLikedGroup(user_id) {
-    return await this.likeModel.getLikedGroup(user_id);
+  async getLikedGroup({ user_id, offset, limit }) {
+    return await this.likeModel.getLikedGroup({ user_id, offset, limit });
   }
 
   async deleteGroup({ group_id, user_id }) {
