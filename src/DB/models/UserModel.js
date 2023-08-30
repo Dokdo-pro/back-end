@@ -24,8 +24,11 @@ class UserModel {
     }
     return user;
   }
-  async findByIdAndUpdateInfo({ user_id, hashedPW, name, introduction }) {
-    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW, name, introduction } }, { new: true });
+  async findByIdAndUpdateInfo({ user_id, name, introduction }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { name, introduction } }, { new: true });
+  }
+  async findByIdAndUpdatePassword({ user_id, hashedPW }) {
+    return await User.findOneAndUpdate({ user_id: user_id }, { $set: { password: hashedPW } }, { new: true });
   }
   async getAllUsers({ limit, offset }) {
     return await User.find({ role: "user" }).limit(limit).skip(offset);
