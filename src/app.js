@@ -16,7 +16,7 @@ const create = async () => {
     cors({
       credentials: true,
       //origin: `http://${config.location}:${config.port}`,
-      origin: true,
+      origin: 'https://34.64.149.22:3001',
       //origin: "http://localhost:3000",
     })
   );
