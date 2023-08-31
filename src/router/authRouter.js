@@ -3,6 +3,7 @@ const { userService, groupService } = require("../services");
 const { buildResponse } = require("../misc/utils");
 const { uploadProfile } = require("../misc/multer");
 const { asyncHandler, isAuthenticated } = require("../middlewares");
+const nodemon = require("nodemon");
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     const loginResult = await userService.getUserToken({ email, password });
-    res.cookie("loginToken", loginResult.token).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
+    res.cookie("loginToken", loginResult.token, { sameSite: "none", httpOnly: true }).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
   })
 );
 
