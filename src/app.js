@@ -18,7 +18,6 @@ const create = async () => {
       //origin: `http://${config.location}:${config.port}`,
       //origin: "34.64.149.22:3001",
       origin: "http://localhost:3000",
-      credentials: true,
     })
   );
 
