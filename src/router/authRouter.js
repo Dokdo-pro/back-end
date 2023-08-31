@@ -23,7 +23,7 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     const loginResult = await userService.getUserToken({ email, password });
-    res.cookie("loginToken", loginResult.token).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
+    res.cookie("loginToken", loginResult.token, { sameSite: "lax" }).json(buildResponse({ isLogin: true, isAdmin: loginResult.isAdmin }));
   })
 );
 
