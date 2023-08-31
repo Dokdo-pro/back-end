@@ -49,7 +49,7 @@ class groupService {
       const g = getAllGroups.sort((a, b) => {
         return b.like - a.like;
       });
-      g.slice(offset, offset + limit);
+      return g.slice(offset, offset + limit);
     } else if (orderBy === "random") {
       return getAllGroups.sort(() => Math.random() - 0.5).slice(offset, offset + limit);
     } else {
