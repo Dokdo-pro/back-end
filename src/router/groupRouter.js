@@ -28,7 +28,6 @@ router.get(
 
 router.put(
   "/profilePic",
-  isAuthenticated,
   uploadProfile.single("img"),
   asyncHandler(async (req, res, next) => {
     const file = req.file;
