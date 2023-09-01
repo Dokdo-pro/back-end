@@ -13,8 +13,7 @@ v1Router.use("/auth", authRouter);
 v1Router.use("/group", groupRouter);
 v1Router.use("/post", postRouter);
 v1Router.use("/image", imageRouter);
-v1Router.use("/admin", adminRouter);
-// v1Router.use("/admin", isAuthenticated, isAdmin, adminRouter);
+v1Router.use("/admin", isAuthenticated, isAdmin, adminRouter);
 
 module.exports = {
   v1: v1Router, // API 버저닝
