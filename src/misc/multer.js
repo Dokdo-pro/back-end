@@ -5,7 +5,7 @@ const profileStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/profiles/");
   },
-  filename: function (req, file, cb) {
+  filename: function (req, file, callback) {
     const extension = path.extname(file.originalname);
     const basename = path.basename(file.originalname, extension);
     callback(null, basename + "-" + Date.now() + extension);
