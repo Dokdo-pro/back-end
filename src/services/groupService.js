@@ -134,7 +134,6 @@ class groupService {
 
   async getComments({ post_id, limit, offset }) {
     const comments = await this.commentTopostModel.findCommentsByPostId({ post_id, limit, offset });
-    console.log(comments);
     return await Promise.all(
       comments.map(async (item) => {
         const comments = await this.commentModel.findById(item.comment_id);
@@ -296,7 +295,6 @@ class groupService {
       throw new AppError("Bad Request", 400, "모임에 가입하지 않은 사용자입니다.");
     }
     const post = await this.albumToboardModel.findAlbumByPostId(post_id);
-    console.log(post);
     if (user_id !== post.user_id) {
       throw new AppError("Bad Request", 400, "수정 권한이 없습니다.");
     }
