@@ -134,9 +134,12 @@ class groupService {
 
   async getComments({ post_id, limit, offset }) {
     const comments = await this.commentTopostModel.findCommentsByPostId({ post_id, limit, offset });
+    console.log(comments);
     return await Promise.all(
-      comments.map((item) => {
-        return this.commentModel.findById(item);
+      comments.map(async (item) => {
+        const comments = await this.commentModel.findById(item.comment_id);
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { comments, user };
       })
     );
   }
@@ -170,8 +173,10 @@ class groupService {
     }
     const replies = await this.replyModel.getRepliesByCommentId(comment_id);
     return await Promise.all(
-      replies.map((item) => {
-        return this.commentModel.findById(item);
+      replies.map(async (item) => {
+        const reply = await this.commentModel.findById(item.comment_id);
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { reply, user };
       })
     );
   }

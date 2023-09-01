@@ -45,7 +45,7 @@ class UserModel {
   }
   async getUserInfo(user_id) {
     const user = await User.findOne({ user_id: user_id });
-    return { name: user.name, profilePic: user.profilePic };
+    return { name: user.name, profilePic: user.profilePic, introduction: user.introduction };
   }
 }
 

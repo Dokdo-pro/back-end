@@ -28,7 +28,7 @@ const UserSchema = new Schema(
     },
     introduction: {
       type: String,
-      default: "",
+      default: "안녕하세요.",
     },
     role: {
       type: String,
