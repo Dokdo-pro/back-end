@@ -18,7 +18,7 @@ const GroupSchema = new Schema(
     },
     profile: {
       type: String,
-      default: "",
+      default: "_2a0a1793-5279-44d0-be24-37dd2bf7e866-1693608814602.jpeg",
     },
     meeting: {
       type: Number,
