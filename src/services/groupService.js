@@ -134,9 +134,12 @@ class groupService {
 
   async getComments({ post_id, limit, offset }) {
     const comments = await this.commentTopostModel.findCommentsByPostId({ post_id, limit, offset });
+    console.log(comments);
     return await Promise.all(
-      comments.map((item) => {
-        return this.commentModel.findById(item);
+      comments.map(async (item) => {
+        const comments = await this.commentModel.findById(item.comment_id);
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { comments, user };
       })
     );
   }
