@@ -8,10 +8,7 @@ class ReplyModel {
     return await Reply.create({ comment_id, parentComment_id, user_id });
   }
   async getRepliesByCommentId(comment_id) {
-    const replies = await Reply.find({ parentComment_id: comment_id });
-    return replies.map((item) => {
-      return item.comment_id;
-    });
+    return await Reply.find({ parentComment_id: comment_id });
   }
   async findReplyByReplyId(reply_id) {
     return await Reply.findOne({ comment_id: reply_id });
