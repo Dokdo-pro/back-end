@@ -27,6 +27,17 @@ router.get(
 );
 
 router.put(
+  "/profilePic",
+  isAuthenticated,
+  uploadProfile.single("img"),
+  asyncHandler(async (req, res, next) => {
+    const file = req.file;
+    const filename = file.filename;
+    res.json(buildResponse(filename));
+  })
+);
+
+router.put(
   "/:group_id",
   isAuthenticated,
   asyncHandler(async (req, res, next) => {
@@ -35,19 +46,6 @@ router.put(
     const { name, tags, introduction, place, location, day, genre, age } = req.body;
     const putGroup = await groupService.putGroup({ group_id, user_id, name, tags, introduction, place, location, day, genre, age });
     res.json(buildResponse(putGroup));
-  })
-);
-
-router.put(
-  "/:group_id/profilePic",
-  isAuthenticated,
-  uploadProfile.single("img"),
-  asyncHandler(async (req, res, next) => {
-    const user_id = req.user_id;
-    const { group_id } = req.params;
-    const profilePic = req.file.filename;
-    const editProflie = await groupService.putProfile({ group_id, user_id, profilePic });
-    res.json(buildResponse(editProflie));
   })
 );
 
