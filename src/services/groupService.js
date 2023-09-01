@@ -173,8 +173,10 @@ class groupService {
     }
     const replies = await this.replyModel.getRepliesByCommentId(comment_id);
     return await Promise.all(
-      replies.map((item) => {
-        return this.commentModel.findById(item);
+      replies.map(async (item) => {
+        const reply = await this.commentModel.findById(item.comment_id);
+        const user = await this.userModel.getUserInfo(item.user_id);
+        return { reply, user };
       })
     );
   }
