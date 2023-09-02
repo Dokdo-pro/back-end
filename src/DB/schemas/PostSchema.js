@@ -13,7 +13,7 @@ const PostSchema = new Schema(
     },
     images: {
       type: [String],
-      default: [],
+      default: ["áá³áá³ááµá«áá£áº 2023-09-02 áá©áá¥á« 11.59.20-1693623628092.png"],
     },
     post_id: {
       type: Number,
