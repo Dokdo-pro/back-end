@@ -104,6 +104,18 @@ router.get(
   })
 );
 
+router.put(
+  "/:group_id/profilePic",
+  isAuthenticated,
+  uploadProfile.single("img"),
+  asyncHandler(async (req, res, next) => {
+    const { group_id } = req.params;
+    const profilePic = req.file.filename;
+    const editProflie = await groupService.putProfile({ group_id, user_id, profilePic });
+    res.json(buildResponse(editProflie));
+  })
+);
+
 router.get(
   "/:group_id/posts/:post_id",
   asyncHandler(async (req, res, next) => {
