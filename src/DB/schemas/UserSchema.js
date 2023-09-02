@@ -24,7 +24,7 @@ const UserSchema = new Schema(
     },
     profilePic: {
       type: String,
-      default: "_2a0a1793-5279-44d0-be24-37dd2bf7e866-1693608814602.jpeg",
+      default: "KakaoTalk_Photo_2023-09-02-07-38-33-1693614515172.png",
     },
     introduction: {
       type: String,
