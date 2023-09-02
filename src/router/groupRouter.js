@@ -109,7 +109,7 @@ router.put(
   isAuthenticated,
   uploadProfile.single("img"),
   asyncHandler(async (req, res, next) => {
-    const { group_id } = req.params;
+    const { user_id, group_id } = req.params;
     const profilePic = req.file.filename;
     const editProflie = await groupService.putProfile({ group_id, user_id, profilePic });
     res.json(buildResponse(editProflie));
