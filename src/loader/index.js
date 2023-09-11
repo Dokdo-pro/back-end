@@ -23,7 +23,7 @@ connectMongoDB = async () => {
 
   // mongoDB로 연결. 여기서 await를 해주면 연결할 때까지 기다리고 다음 코드를 수행
   // await를 안하면 mongoose가 첫 쿼리를 실행할 때 딜레이가 생길 수 있다. 연결이 안되면 쿼리를 요청할 수 없기 때문에 연결될 때까지 기다리기 때문
-  await mongoose.connect(config.MONGODB_URI, {
+  await mongoose.connect(config.mongoDBUri, {
     minPoolSize: 4, // min pool size 설정
     maxPoolSize: 20, // max pool size 설정
   });
