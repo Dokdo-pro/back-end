@@ -20,7 +20,13 @@ router.put(
     const { user_id } = req.params;
     const { email, name, profilePic, introduction } = req.body;
     const { withdrawal } = req.query.withdrawal;
-    const putUser = await userService.adminPutUser({ user_id, email, name, profilePic, introduction });
+    const putUser = await userService.adminPutUser({
+      user_id,
+      email,
+      name,
+      profilePic,
+      introduction,
+    });
     res.json(buildResponse(putUser));
   })
 );
@@ -49,6 +55,14 @@ router.get(
     const { limit, offset } = req.query;
     const albums = await postService.getAllAlbums({ limit, offset });
     res.json(buildResponse(albums));
+  })
+);
+router.delete(
+  "/albums/:post_id",
+  asyncHandler(async (req, res, next) => {
+    const { post_id } = req.params;
+    const deleteAlbum = await postService.deleteAlbum(post_id);
+    res.json(buildResponse(deleteAlbum));
   })
 );
 
@@ -93,7 +107,14 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const { group_id } = req.params;
     const { name, profile, maxMember, tags } = req.body;
-    const putGroup = await groupService.putGroup({ isAdmin: true, group_id, name, profile, maxMember, tags });
+    const putGroup = await groupService.putGroup({
+      isAdmin: true,
+      group_id,
+      name,
+      profile,
+      maxMember,
+      tags,
+    });
     res.json(buildResponse(putGroup));
   })
 );
@@ -102,8 +123,19 @@ router.put(
   "/groups/:group_id",
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
-    const { name, tags, introduction, place, location, day, genre, age } = req.body;
-    const putGroup = await groupService.adminPutGroup({ group_id, name, tags, introduction, place, location, day, genre, age });
+    const { name, tags, introduction, place, location, day, genre, age } =
+      req.body;
+    const putGroup = await groupService.adminPutGroup({
+      group_id,
+      name,
+      tags,
+      introduction,
+      place,
+      location,
+      day,
+      genre,
+      age,
+    });
     res.json(buildResponse(putGroup));
   })
 );

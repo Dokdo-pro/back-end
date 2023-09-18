@@ -39,6 +39,10 @@ class postService {
       })
     );
   }
+async deleteAlbum(post_id) {
+  const deletePost = await this.postModel.delete(post_id);
+  const deleteAlbumFromGroup = await this.albumToboardModel.delete(post_id)
+  return {deletePost:deletePost,deleteAlbumFromGroup:deleteAlbumFromGroup }
 }
-
+}
 module.exports = new postService(userModel, postModel, postToboardModel, albumToboardModel);
