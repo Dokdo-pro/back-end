@@ -9,10 +9,24 @@ const router = Router();
 router.post(
   "/",
   isAuthenticated,
+  upload.single("profile"), // Multer middleware to handle profile image upload
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
-    const { name, introduction, tag, place, location, age, genre, day } = req.body;
-    const postGroup = await groupService.postGroup({ user_id, name, introduction, tag, place, location, age, genre, day });
+    const { name, introduction, tag, place, location, age, genre, day } =
+      req.body;
+    const profileURL = req.file ? req.file.location : null; // Assuming you are using S3 to store the uploaded images
+    const postGroup = await groupService.postGroup({
+      user_id,
+      name,
+      introduction,
+      tag,
+      place,
+      location,
+      age,
+      genre,
+      day,
+      profile: profileURL,
+    });
     res.json(buildResponse(postGroup));
   })
 );
@@ -42,8 +56,20 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const group_id = req.params.group_id;
     const user_id = req.user_id;
-    const { name, tags, introduction, place, location, day, genre, age } = req.body;
-    const putGroup = await groupService.putGroup({ group_id, user_id, name, tags, introduction, place, location, day, genre, age });
+    const { name, tags, introduction, place, location, day, genre, age } =
+      req.body;
+    const putGroup = await groupService.putGroup({
+      group_id,
+      user_id,
+      name,
+      tags,
+      introduction,
+      place,
+      location,
+      day,
+      genre,
+      age,
+    });
     res.json(buildResponse(putGroup));
   })
 );
@@ -65,7 +91,12 @@ router.get(
     const { orderBy, location, day, genre, age } = req.query;
     const condition = { location, day, genre, age };
     const { limit, offset } = req.query;
-    const groupsInfo = await groupService.getGroups({ orderBy, condition, limit, offset });
+    const groupsInfo = await groupService.getGroups({
+      orderBy,
+      condition,
+      limit,
+      offset,
+    });
     res.json(buildResponse(groupsInfo));
   })
 );
@@ -89,7 +120,13 @@ router.post(
     const user_id = req.user_id;
     const group_id = req.params.group_id;
     const { title, content, images } = req.body;
-    const postPost = await groupService.postPost({ user_id, group_id, title, content, images });
+    const postPost = await groupService.postPost({
+      user_id,
+      group_id,
+      title,
+      content,
+      images,
+    });
     res.json(buildResponse(postPost));
   })
 );
@@ -111,7 +148,11 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const { user_id, group_id } = req.params;
     const profilePic = req.file.filename;
-    const editProflie = await groupService.putProfile({ group_id, user_id, profilePic });
+    const editProflie = await groupService.putProfile({
+      group_id,
+      user_id,
+      profilePic,
+    });
     res.json(buildResponse(editProflie));
   })
 );
@@ -133,7 +174,14 @@ router.put(
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
     const { title, content, images } = req.body;
-    const putPost = await groupService.putPost({ user_id, group_id, post_id, title, content, images });
+    const putPost = await groupService.putPost({
+      user_id,
+      group_id,
+      post_id,
+      title,
+      content,
+      images,
+    });
     res.json(buildResponse(putPost));
   })
 );
@@ -144,7 +192,11 @@ router.delete(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const deletePost = await groupService.deletePost({ user_id, group_id, post_id });
+    const deletePost = await groupService.deletePost({
+      user_id,
+      group_id,
+      post_id,
+    });
     res.json(buildResponse(deletePost));
   })
 );
@@ -156,7 +208,12 @@ router.post(
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
     const { text } = req.body;
-    const postComment = await groupService.postComment({ user_id, group_id, post_id, text });
+    const postComment = await groupService.postComment({
+      user_id,
+      group_id,
+      post_id,
+      text,
+    });
     res.json(buildResponse(postComment));
   })
 );
@@ -166,7 +223,11 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { group_id, post_id } = req.params;
     const { limit, offset } = req.query;
-    const getComments = await groupService.getComments({ post_id, limit, offset });
+    const getComments = await groupService.getComments({
+      post_id,
+      limit,
+      offset,
+    });
     res.json(buildResponse(getComments));
   })
 );
@@ -177,7 +238,11 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, comment_id } = req.params;
-    const deleteComments = await groupService.deleteComment({ user_id, group_id, comment_id });
+    const deleteComments = await groupService.deleteComment({
+      user_id,
+      group_id,
+      comment_id,
+    });
     res.json(buildResponse(deleteComments));
   })
 );
@@ -189,7 +254,12 @@ router.post(
     const user_id = req.user_id;
     const { group_id, comment_id } = req.params;
     const { text } = req.body;
-    const postReply = await groupService.postReply({ user_id, group_id, parentComment_id: comment_id, text });
+    const postReply = await groupService.postReply({
+      user_id,
+      group_id,
+      parentComment_id: comment_id,
+      text,
+    });
     res.json(buildResponse(postReply));
   })
 );
@@ -200,7 +270,11 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, comment_id } = req.params;
-    const getReplies = await groupService.getReplies({ user_id, group_id, comment_id });
+    const getReplies = await groupService.getReplies({
+      user_id,
+      group_id,
+      comment_id,
+    });
     res.json(buildResponse(getReplies));
   })
 );
@@ -211,7 +285,11 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, reply_id } = req.params;
-    const deleteReply = await groupService.deleteReply({ user_id, group_id, reply_id });
+    const deleteReply = await groupService.deleteReply({
+      user_id,
+      group_id,
+      reply_id,
+    });
     res.json(buildResponse(deleteReply));
   })
 );
@@ -222,7 +300,11 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const postLike = await groupService.postLike({ user_id, group_id, post_id });
+    const postLike = await groupService.postLike({
+      user_id,
+      group_id,
+      post_id,
+    });
     res.json(buildResponse(postLike));
   })
 );
@@ -232,7 +314,11 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const getPostLike = await groupService.getPostLike({ user_id, group_id, post_id });
+    const getPostLike = await groupService.getPostLike({
+      user_id,
+      group_id,
+      post_id,
+    });
     res.json(buildResponse({ likeNum: getPostLike }));
   })
 );
@@ -264,7 +350,13 @@ router.post(
     const user_id = req.user_id;
     const group_id = req.params.group_id;
     const { title, content, images } = req.body;
-    const postAlbum = await groupService.postAlbum({ user_id, group_id, title, content, images });
+    const postAlbum = await groupService.postAlbum({
+      user_id,
+      group_id,
+      title,
+      content,
+      images,
+    });
     res.json(buildResponse(postAlbum));
   })
 );
@@ -286,7 +378,14 @@ router.put(
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
     const { title, content, images } = req.body;
-    const putAlbum = await groupService.putAlbum({ user_id, group_id, post_id, title, content, images });
+    const putAlbum = await groupService.putAlbum({
+      user_id,
+      group_id,
+      post_id,
+      title,
+      content,
+      images,
+    });
     res.json(buildResponse(putAlbum));
   })
 );
@@ -297,7 +396,11 @@ router.delete(
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { group_id, post_id } = req.params;
-    const deleteAlbum = await groupService.deleteAlbum({ user_id, group_id, post_id });
+    const deleteAlbum = await groupService.deleteAlbum({
+      user_id,
+      group_id,
+      post_id,
+    });
     res.json(buildResponse(deleteAlbum));
   })
 );
