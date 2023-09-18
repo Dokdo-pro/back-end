@@ -9,12 +9,10 @@ const router = Router();
 router.post(
   "/",
   isAuthenticated,
-  upload.single("profile"), // Multer middleware to handle profile image upload
   asyncHandler(async (req, res, next) => {
     const user_id = req.user_id;
     const { name, introduction, tag, place, location, age, genre, day } =
       req.body;
-    const profileURL = req.file ? req.file.location : null; // Assuming you are using S3 to store the uploaded images
     const postGroup = await groupService.postGroup({
       user_id,
       name,
@@ -25,7 +23,6 @@ router.post(
       age,
       genre,
       day,
-      profile: profileURL,
     });
     res.json(buildResponse(postGroup));
   })
