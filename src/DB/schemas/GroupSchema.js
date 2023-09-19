@@ -31,11 +31,11 @@ const GroupSchema = new Schema(
         },
         introduction: {
             type: String,
-            defualt: "",
+            default: "",
         },
         place: {
             type: String,
-            defualt: "",
+            default: "",
         },
         maxMember: {
             type: Number,
