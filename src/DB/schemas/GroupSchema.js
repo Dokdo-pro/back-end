@@ -19,7 +19,7 @@ const GroupSchema = new Schema(
         profile: {
             type: String,
             default:
-                "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg",
+                "https://github.com/Dokdo-pro/front-end/blob/dev/src/assets/img/userbasicimg.png?raw=true",
         },
         meeting: {
             type: Number,

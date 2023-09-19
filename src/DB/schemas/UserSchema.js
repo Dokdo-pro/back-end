@@ -24,7 +24,7 @@ const UserSchema = new Schema(
     },
     profilePic: {
       type: String,
-      default: "KakaoTalk_Photo_2023-09-02-07-38-33-1693614515172.png",
+      default: "https://github.com/Dokdo-pro/front-end/blob/dev/src/assets/img/userbasicimg.png?raw=true",
     },
     introduction: {
       type: String,
