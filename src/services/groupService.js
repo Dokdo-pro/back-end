@@ -440,7 +440,7 @@ class groupService {
     return { putGroup, putTag, putSearch };
   }
 
-  async getAllGroups({ limit, offset,orderBy }) {
+  async getAllGroups({ limit, offset }) {
     return await this.groupModel.getAll({ limit, offset });
   }
 
