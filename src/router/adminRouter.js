@@ -87,9 +87,16 @@ router.delete(
 router.get(
   "/groups",
   asyncHandler(async (req, res, next) => {
+    const { orderBy, location, day, genre, age } = req.query;
+    const condition = { location, day, genre, age };
     const { limit, offset } = req.query;
-    const getAllGroups = await groupService.getAllGroups({ limit, offset });
-    res.json(buildResponse(getAllGroups));
+    const groupsInfo = await groupService.getGroups({
+      orderBy,
+      condition,
+      limit,
+      offset,
+    });
+    res.json(buildResponse(groupsInfo));
   })
 );
 
